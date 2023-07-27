@@ -19,9 +19,7 @@ export class CalendarComponent {
 	};
 
 	selectDates(selectedRange: DateSelectArg): void {
-		alert(selectedRange.start + " to " + selectedRange.end);
-		console.log(selectedRange);
-		const event = { title: "Samuel Buraga", start: selectedRange.start, end: selectedRange.end };
+		const event = { title: "eventName", start: selectedRange.start, end: selectedRange.end };
 		this.events = [...this.events, event];
 		this.calendarOptions.events = this.events;
 	}
