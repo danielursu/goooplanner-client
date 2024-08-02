@@ -1,7 +1,6 @@
-// register.component.ts
-
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-register',
@@ -9,29 +8,49 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  registerForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.registerForm = this.fb.group({
-      username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]]
-    }, { validator: this.passwordMatchValidator });
+    this.registerForm = this.fb.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.required]],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]]
+      },
+      { validators: this.passwordMatchValidator });
   }
 
-  passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password');
-    const confirmPassword = form.get('confirmPassword');
-    return password && confirmPassword && password.value === confirmPassword.value
-      ? null : { passwordMismatch: true };
+  registerForm: FormGroup;
+
+  private encryptPassword(password: string): string {
+    return CryptoJS.SHA256(password).toString();
   }
 
-  onSubmit() {
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { passwordMismatch: true };
+    }
+
+    return null;
+  }
+
+  onSubmit(): void {
     if (this.registerForm.valid) {
-      // Handle registration logic here
-      console.log('Registration submitted', this.registerForm.value);
+      const formValue = this.registerForm.value;
+
+      const encryptedPassword = this.encryptPassword(formValue.password);
+
+      const submissionData = {
+        ...formValue,
+        password: encryptedPassword,
+        confirmPassword: encryptedPassword
+      };
+
+      console.log('Registration submitted', submissionData);
     }
   }
 }
