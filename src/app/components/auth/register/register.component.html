@@ -1,0 +1,46 @@
+<!-- register.component.html -->
+
+<div class="register-container">
+    <p-card header="Register" styleClass="register-card">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid">
+          <div class="p-field">
+            <label for="firstName">First Name</label>
+            <input id="firstName" type="text" pInputText formControlName="firstName">
+            <small *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="p-error">
+              First name is required.
+            </small>
+          </div>
+          <div class="p-field">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" pInputText formControlName="lastName">
+            <small *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="p-error">
+              Last name is required.
+            </small>
+          </div>
+          <div class="p-field">
+            <label for="username">Email</label>
+            <input id="username" type="text" pInputText formControlName="username">
+            <small *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="p-error">
+              Please enter a valid email address.
+            </small>
+          </div>
+          <div class="p-field">
+            <label for="password">Password</label>
+            <input id="password" type="password" pInputText formControlName="password">
+            <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="p-error">
+              Password must be at least 6 characters long.
+            </small>
+          </div>
+          <div class="p-field">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword">
+            <small *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" class="p-error">
+              Passwords do not match.
+            </small>
+          </div>
+          <button pButton type="submit" label="Register" [disabled]="registerForm.invalid"></button>
+        </div>
+      </form>
+    </p-card>
+  </div>
