@@ -1,12 +1,16 @@
 import { Component } from "@angular/core";
 import { CalendarOptions, DateSelectArg, EventInput } from "@fullcalendar/core";
+import { RouterModule } from "@angular/router";
+import { FullCalendarModule } from "@fullcalendar/angular";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 @Component({
 	selector: "app-calendar",
+	standalone: true,
+	imports: [FullCalendarModule, RouterModule],
 	templateUrl: "./calendar.component.html",
-	styleUrls: ["./calendar.component.scss"],
+	styleUrl: "./calendar.component.scss",
 })
 export class CalendarComponent {
 	events: EventInput[] = [];
