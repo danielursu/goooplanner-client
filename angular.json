@@ -57,19 +57,19 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
-						"production": {
-							"browserTarget": "goooplanner-client:build:production"
+            "production": {
+              "buildTarget": "goooplanner-client:build:production"
 						},
-						"development": {
-							"browserTarget": "goooplanner-client:build:development"
+            "development": {
+              "buildTarget": "goooplanner-client:build:development"
 						}
 					},
 					"defaultConfiguration": "development"
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "goooplanner-client:build"
+          "options": {
+            "buildTarget": "goooplanner-client:build"
 					}
 				},
 				"test": {
