@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import * as CryptoJS from 'crypto-js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,7 @@ import * as CryptoJS from 'crypto-js';
 })
 export class RegisterComponent {
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.registerForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -51,6 +52,8 @@ export class RegisterComponent {
       };
 
       console.log('Registration submitted', submissionData);
+
+      this.router.navigate(['/']);
     }
   }
 }
