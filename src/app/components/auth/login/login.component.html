@@ -1,0 +1,23 @@
+<div class="login-container">
+  <p-card header="Login" styleClass="login-card">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="email">Email</label>
+          <input id="email" type="text" pInputText formControlName="email">
+          <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="p-error">
+            Please enter a valid email address.
+          </small>
+        </div>
+        <div class="p-field">
+          <label for="password">Password</label>
+          <input id="password" type="password" pInputText formControlName="password">
+          <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="p-error">
+            Password must be at least 6 characters long.
+          </small>
+        </div>
+        <button pButton type="submit" label="Login" [disabled]="loginForm.invalid"></button>
+      </div>
+    </form>
+  </p-card>
+</div>
