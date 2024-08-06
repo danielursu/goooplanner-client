@@ -20,6 +20,9 @@
             </small>
           }
         </div>
+
+        <span> Do not have an account ? <a [routerLink]="['/register']">Register</a></span>
+        
         <button pButton type="submit" label="Login" [disabled]="loginForm.invalid">
         </button>
       </div>

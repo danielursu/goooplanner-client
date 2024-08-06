@@ -1,5 +1,6 @@
 $card-width: 700px;
 $card-padding: 2rem;
+$spacing: 1rem;
 $box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 $mobile-breakpoint: 730px;
 
@@ -32,6 +33,7 @@ $mobile-breakpoint: 730px;
 
 button[type="submit"] {
   width: 100%;
+  margin-top: $spacing;
 }
 
 @media (max-width: $mobile-breakpoint) {
