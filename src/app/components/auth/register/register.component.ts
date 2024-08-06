@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import * as CryptoJS from 'crypto-js';
+// import * as CryptoJS from 'crypto-js';
+import CryptoES from 'crypto-es';
 import { Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
+  imports: [ReactiveFormsModule, CardModule, ButtonModule, InputTextModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
 
@@ -25,7 +32,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
 
   private encryptPassword(password: string): string {
-    return CryptoJS.SHA256(password).toString();
+    return CryptoES.SHA256(password).toString();
   }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {

@@ -37,5 +37,6 @@ button[type="submit"] {
 @media (max-width: $mobile-breakpoint) {
   :host ::ng-deep .register-card {
     @include card-styles;
+    width: 100%;
   }
 }
