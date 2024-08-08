@@ -1,31 +1,28 @@
 <div class="login-container">
-  <p-card header="Login" styleClass="login-card">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="p-fluid">
-        <div class="p-field">
-          <label for="email">Email</label>
-          <input id="email" type="text" pInputText formControlName="email">
-          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-            <small class="p-error">
-              Please enter a valid email address.
-            </small>
-          }
-        </div>
-        <div class="p-field">
-          <label for="password">Password</label>
-          <input id="password" type="password" pInputText formControlName="password">
-          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-            <small class="p-error">
-              Password must be at least 6 characters long.
-            </small>
-          }
-        </div>
+	<p-card header="Login" styleClass="login-card">
+		<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+			<div class="p-fluid">
+				<div class="p-field">
+					<label for="email">Email</label>
+					<input id="email" type="text" pInputText formControlName="email" />
+					@if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+					<small class="p-error"> Please enter a valid email address. </small>
+					}
+				</div>
+				<div class="p-field">
+					<label for="password">Password</label>
+					<input id="password" type="password" pInputText formControlName="password" />
+					@if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+					<small class="p-error"> Password must be at least 6 characters long. </small>
+					}
+				</div>
 
-        <span> Do not have an account ? <a [routerLink]="['/register']">Register</a></span>
-        
-        <button pButton type="submit" label="Login" [disabled]="loginForm.invalid">
-        </button>
-      </div>
-    </form>
-  </p-card>
+				<span> Do not have an account ? <a [routerLink]="['/register']">Register</a></span>
+
+				<button pButton type="submit" label="Login" [disabled]="loginForm.invalid">
+					<!-- login -->
+				</button>
+			</div>
+		</form>
+	</p-card>
 </div>

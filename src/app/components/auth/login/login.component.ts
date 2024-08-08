@@ -1,34 +1,48 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+import { Component } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { RouterModule } from "@angular/router";
+import { ReactiveFormsModule } from "@angular/forms";
+import { InputTextModule } from "primeng/inputtext";
+import { CardModule } from "primeng/card";
+import { ButtonModule } from "primeng/button";
+import { HttpClient } from "@angular/common/http";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [RouterModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+	selector: "app-login",
+	standalone: true,
+	imports: [RouterModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule],
+	templateUrl: "./login.component.html",
+	styleUrl: "./login.component.scss",
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+	constructor(
+		private fb: FormBuilder,
+		private router: Router,
+		private http: HttpClient,
+		private authService: AuthService,
+	) {
+		this.loginForm = this.fb.group({
+			email: ["", [Validators.required, Validators.email]],
+			password: ["", [Validators.required, Validators.minLength(6)]],
+		});
+	}
+	loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
-  }
+	login(): void {
+		const email = this.loginForm.value.email;
+		const password = this.loginForm.value.password.trim();
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      console.log('Login submitted', this.loginForm.value);
+		this.authService.login(email, password).subscribe(() => {
+			this.router.navigate(["/"]);
+		});
+	}
 
-      this.router.navigate(['/']);
-    }
-  }
+	onSubmit() {
+		if (this.loginForm.valid) {
+			console.log("Login submitted: ", this.loginForm.value.password);
+			this.login();
+		}
+	}
 }

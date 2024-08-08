@@ -1,58 +1,49 @@
 <div class="register-container">
-  <p-card header="Register" styleClass="register-card">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <div class="p-fluid">
-        <div class="p-field">
-          <label for="firstName">First Name</label>
-          <input id="firstName" type="text" pInputText formControlName="firstName">
-          @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
-            <small class="p-error">
-              First name is required.
-            </small>
-          }
-        </div>
-        <div class="p-field">
-          <label for="lastName">Last Name</label>
-          <input id="lastName" type="text" pInputText formControlName="lastName">
-          @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
-            <small class="p-error">
-              Last name is required.
-            </small>
-          }
-        </div>
-        <div class="p-field">
-          <label for="email">Email</label>
-          <input id="email" type="text" pInputText formControlName="email">
-          @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
-            <small class="p-error">
-              Please enter a valid email address.
-            </small>
-          }
-        </div>
-        <div class="p-field">
-          <label for="password">Password</label>
-          <input id="password" type="password" pInputText formControlName="password">
-          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
-            <small class="p-error">
-              Password must be at least 6 characters long.
-            </small>
-          }
-        </div>
-        <div class="p-field">
-          <label for="confirmPassword">Confirm Password</label>
-          <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword">
-          @if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
-            <small class="p-error">
-              Passwords do not match.
-            </small>
-          }
-        </div>
-        
-        <span> Already have an account ? <a [routerLink]="['/login']">Login</a></span>
+	<p-card header="Register" styleClass="register-card">
+		<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+			<div class="p-fluid">
+				<div class="p-field">
+					<label for="firstName">First Name</label>
+					<input id="firstName" type="text" pInputText formControlName="firstName" />
+					@if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+					<small class="p-error"> First name is required. </small>
+					}
+				</div>
+				<div class="p-field">
+					<label for="lastName">Last Name</label>
+					<input id="lastName" type="text" pInputText formControlName="lastName" />
+					@if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
+					<small class="p-error"> Last name is required. </small>
+					}
+				</div>
+				<div class="p-field">
+					<label for="email">Email</label>
+					<input id="email" type="text" pInputText formControlName="email" />
+					@if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+					<small class="p-error"> Please enter a valid email address. </small>
+					}
+				</div>
+				<div class="p-field">
+					<label for="password">Password</label>
+					<input id="password" type="password" pInputText formControlName="password" />
+					@if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+					<small class="p-error"> Password must be at least 6 characters long. </small>
+					}
+				</div>
+				<div class="p-field">
+					<label for="confirmPassword">Confirm Password</label>
+					<input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" />
+					@if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
+					<small class="p-error"> Passwords do not match. </small>
+					}
+				</div>
 
-        <button pButton type="submit" label="Register" [disabled]="registerForm.invalid">
-        </button>
-      </div>
-    </form>
-  </p-card>
+				<span> Already have an account ? <a [routerLink]="['/login']">Login</a></span>
+
+				<button pButton type="submit" label="Register" [disabled]="registerForm.invalid">
+					<!-- register -->
+				</button>
+			</div>
+		</form>
+	</p-card>
 </div>
