@@ -63,7 +63,7 @@ export class RegisterComponent {
 
 		console.log("Registration submitted", submissionData);
 
-		this.http.post("http://localhost:3000/user", submissionData).subscribe(
+		this.http.post("http://localhost:3000/auth/register", submissionData).subscribe(
 			(response) => {
 				console.log("Response from server", response);
 				this.router.navigate(["/"]);
@@ -76,6 +76,7 @@ export class RegisterComponent {
 
 	onSubmit(): void {
 		if (this.registerForm.valid) {
+			console.log("Login submitted: ", this.registerForm.value);
 			this.register();
 		}
 	}

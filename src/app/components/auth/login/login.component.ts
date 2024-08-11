@@ -20,8 +20,8 @@ export class LoginComponent {
 	constructor(
 		private fb: FormBuilder,
 		private router: Router,
-		private http: HttpClient,
 		private authService: AuthService,
+		private http: HttpClient,
 	) {
 		this.loginForm = this.fb.group({
 			email: ["", [Validators.required, Validators.email]],
@@ -30,18 +30,24 @@ export class LoginComponent {
 	}
 	loginForm: FormGroup;
 
-	login(): void {
-		const email = this.loginForm.value.email;
+	login() {
+		const email = this.loginForm.value.email.trim();
 		const password = this.loginForm.value.password.trim();
 
-		this.authService.login(email, password).subscribe(() => {
-			this.router.navigate(["/"]);
+		this.authService.login(email, password).subscribe({
+			next: () => {
+				console.log("successfull request");
+				this.router.navigate(["/"]);
+			},
+			error: (error) => {
+				console.log("Error: ", error);
+			},
 		});
 	}
 
 	onSubmit() {
 		if (this.loginForm.valid) {
-			console.log("Login submitted: ", this.loginForm.value.password);
+			console.log("Login submitted: ", this.loginForm.value);
 			this.login();
 		}
 	}
