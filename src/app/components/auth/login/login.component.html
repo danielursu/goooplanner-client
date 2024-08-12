@@ -17,6 +17,10 @@
 					}
 				</div>
 
+				@if(errorMessage) {
+				<p class="p-error">{{ errorMessage }}</p>
+				}
+
 				<span> Do not have an account ? <a [routerLink]="['/register']">Register</a></span>
 
 				<button pButton type="submit" label="Login" [disabled]="loginForm.invalid">

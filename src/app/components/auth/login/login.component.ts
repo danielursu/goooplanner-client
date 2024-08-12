@@ -29,6 +29,7 @@ export class LoginComponent {
 		});
 	}
 	loginForm: FormGroup;
+	errorMessage: string | null = null;
 
 	login() {
 		const email = this.loginForm.value.email.trim();
@@ -41,6 +42,11 @@ export class LoginComponent {
 			},
 			error: (error) => {
 				console.log("Error: ", error);
+				if (error.status === 401) {
+					this.errorMessage = "Incorrect email or password.";
+				} else {
+					this.errorMessage = "An unexpected error occurred. Please try again later.";
+				}
 			},
 		});
 	}
