@@ -16,7 +16,7 @@ export class AuthService {
 		return CryptoES.SHA256(password).toString();
 	}
 
-	login(email: string, password: string): Observable<any> {
+	public login(email: string, password: string): Observable<string> {
 		const encryptedPassword = this.encryptPassword(password);
 
 		return this.http
@@ -42,16 +42,16 @@ export class AuthService {
 			);
 	}
 
-	logout(): void {
+	public logout(): void {
 		localStorage.removeItem("access_token");
 	}
 
-	isLoggedIn(): boolean {
+	public isLoggedIn(): boolean {
 		const token = localStorage.getItem("access_token");
 		return !!token;
 	}
 
-	getToken(): string | null {
+	public getToken(): string | null {
 		return localStorage.getItem("access_token");
 	}
 }

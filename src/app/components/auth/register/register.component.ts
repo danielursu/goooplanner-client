@@ -33,13 +33,13 @@ export class RegisterComponent {
 			{ validators: this.passwordMatchValidator },
 		);
 	}
-	registerForm: FormGroup;
+	public registerForm: FormGroup;
 
 	private encryptPassword(password: string): string {
 		return CryptoES.SHA256(password).toString();
 	}
 
-	passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+	private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
 		const password = control.get("password");
 		const confirmPassword = control.get("confirmPassword");
 
@@ -50,7 +50,7 @@ export class RegisterComponent {
 		return null;
 	}
 
-	register(): void {
+	private register(): void {
 		const formValue = this.registerForm.value;
 
 		const encryptedPassword = this.encryptPassword(formValue.password);
@@ -74,7 +74,7 @@ export class RegisterComponent {
 		);
 	}
 
-	onSubmit(): void {
+	public onSubmit(): void {
 		if (this.registerForm.valid) {
 			console.log("Login submitted: ", this.registerForm.value);
 			this.register();

@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { InputTextModule } from "primeng/inputtext";
 import { CardModule } from "primeng/card";
 import { ButtonModule } from "primeng/button";
-import { HttpClient } from "@angular/common/http";
+
 import { AuthService } from "src/app/services/auth.service";
 
 @Component({
@@ -21,17 +21,16 @@ export class LoginComponent {
 		private fb: FormBuilder,
 		private router: Router,
 		private authService: AuthService,
-		private http: HttpClient,
 	) {
 		this.loginForm = this.fb.group({
 			email: ["", [Validators.required, Validators.email]],
 			password: ["", [Validators.required, Validators.minLength(6)]],
 		});
 	}
-	loginForm: FormGroup;
-	errorMessage: string | null = null;
+	public loginForm: FormGroup;
+	public errorMessage: string | null = null;
 
-	login() {
+	private login(): void {
 		const email = this.loginForm.value.email.trim();
 		const password = this.loginForm.value.password.trim();
 
@@ -51,7 +50,7 @@ export class LoginComponent {
 		});
 	}
 
-	onSubmit() {
+	public onSubmit(): void {
 		if (this.loginForm.valid) {
 			console.log("Login submitted: ", this.loginForm.value);
 			this.login();

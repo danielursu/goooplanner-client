@@ -11,7 +11,7 @@ export class NoAuthGuard implements CanActivate {
 		private router: Router,
 	) {}
 
-	canActivate(): boolean {
+	public canActivate(): boolean {
 		if (this.authService.isLoggedIn()) {
 			this.router.navigate([""]);
 			return false;
