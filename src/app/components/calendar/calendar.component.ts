@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CalendarOptions, DateSelectArg, EventInput } from "@fullcalendar/core";
+import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { Router } from "@angular/router";
 import { FullCalendarModule } from "@fullcalendar/angular";
@@ -20,12 +21,11 @@ interface CalendarEvent extends EventInput {
 @Component({
 	selector: "app-calendar",
 	standalone: true,
-	imports: [FullCalendarModule, RouterModule],
+	imports: [FullCalendarModule, RouterModule, CommonModule],
 	templateUrl: "./calendar.component.html",
 	styleUrl: "./calendar.component.scss",
 })
 export class CalendarComponent implements OnInit {
-
 	constructor(
 		private jwtService: JwtService,
 		private authService: AuthService,
@@ -34,10 +34,12 @@ export class CalendarComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.userData = this.jwtService.getUserData();
+		this.profileColor = this.getRandomColor();
 	}
 
 	public userData: UserData | null | undefined;
 	private events: EventInput[] = [];
+	public profileColor = this.getRandomColor();
 
 	public onLogOut(): void {
 		this.authService.logout();
@@ -55,5 +57,21 @@ export class CalendarComponent implements OnInit {
 		const event: CalendarEvent = { title: "eventName", start: selectedRange.start, end: selectedRange.end };
 		this.events = [...this.events, event];
 		this.calendarOptions.events = this.events;
+	}
+
+	public getInitials() {
+		if (!this.userData || !this.userData.firstName || !this.userData.lastName) {
+			return "";
+		}
+
+		return `${this.userData.firstName.charAt(0)}${this.userData.lastName.charAt(0)}`;
+	}
+	private getRandomColor(): string {
+		const letters = "0123456789ABCDEF";
+		let color = "#";
+		for (let i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
 	}
 }

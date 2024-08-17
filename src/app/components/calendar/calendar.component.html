@@ -1,3 +1,10 @@
-<div>Logged user: {{ userData?.email }}</div>
-<button (click)="onLogOut()">Log out</button>
+<div class="user-profile-container">
+	<div class="profile-section">
+		<div class="profile-pic" [ngStyle]="{ 'background-color': profileColor }">
+			{{ getInitials() }}
+		</div>
+		<button class="logout-button" (click)="onLogOut()">Log out</button>
+	</div>
+</div>
+
 <full-calendar [options]="calendarOptions"></full-calendar>
