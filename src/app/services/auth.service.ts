@@ -10,6 +10,9 @@ interface Tokens {
 	access_token: string;
 	refresh_token: string;
 }
+interface Message {
+	message: string;
+}
 
 @Injectable({
 	providedIn: "root",
@@ -44,6 +47,7 @@ export class AuthService {
 				tap((response: Tokens) => {
 					console.log("Tokens:", response);
 					if (response) {
+						// no need to set the refresh_token in the localstorage since it is saved on the server
 						localStorage.setItem("access_token", response.access_token);
 						localStorage.setItem("refresh_token", response.refresh_token);
 					}
@@ -55,10 +59,11 @@ export class AuthService {
 			);
 	}
 
-	public logout(): void {
+	// log out needs to be handled on the server
+	public logout(): Observable<Message> {
 		localStorage.removeItem("access_token");
 		localStorage.removeItem("refresh_token");
-		this.router.navigate(["/login"]);
+		return this.http.post<Message>(`${this.apiUrl}/logout`, {}, { withCredentials: true });
 	}
 
 	public isLoggedIn(): boolean {
@@ -66,6 +71,7 @@ export class AuthService {
 		return !!token;
 	}
 
+	// need to get the refresh_token form cookies
 	public isRefreshTokenExpired(): boolean {
 		const token = localStorage.getItem("refresh_token");
 
@@ -79,7 +85,6 @@ export class AuthService {
 
 			const currentTime = Math.floor(Date.now() / 1000);
 
-			// verify access token expiration
 			if (currentTime > tokenExpire) {
 				return false;
 			} else {
@@ -119,6 +124,7 @@ export class AuthService {
 		return localStorage.getItem("access_token");
 	}
 
+	// need to get the refresh_token from cookies
 	public getNewAccessToken(): Observable<boolean> {
 		if (this.isAccessTokenExpired()) {
 			console.log("yes, access_token is expired");
@@ -147,7 +153,7 @@ export class AuthService {
 		}
 	}
 
-	getRefreshTokenCookie(): Observable<string> {
+	public getRefreshTokenCookie(): Observable<string> {
 		return this.http.get(`${this.apiUrl}/get-cookie`, { responseType: "text", withCredentials: true });
 	}
 }

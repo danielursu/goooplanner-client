@@ -51,8 +51,15 @@ export class CalendarComponent implements OnInit {
 	public profileColor = this.getRandomColor();
 
 	public onLogOut(): void {
-		this.authService.logout();
-		this.router.navigate(["/login"]);
+		this.authService.logout().subscribe({
+			next: (response: { message: string }) => {
+				console.log(response.message);
+				this.router.navigate(["/login"]);
+			},
+			error: (error: string) => {
+				console.error("Logout failed:", error);
+			},
+		});
 	}
 
 	calendarOptions: CalendarOptions = {

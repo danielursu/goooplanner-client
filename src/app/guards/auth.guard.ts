@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
 				if (this.authService.isLoggedIn() && this.authService.isRefreshTokenExpired()) {
 					console.log("Access token refreshed:", isValid);
 				} else {
+					console.log("Log out, refresh_token expired.");
 					this.authService.logout();
 				}
 			}),
