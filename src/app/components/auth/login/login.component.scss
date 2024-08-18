@@ -6,39 +6,47 @@ $mobile-breakpoint: 730px;
 
 // Mixins
 @mixin card-styles {
-  padding: $card-padding;
-  width: $card-width;
-  box-shadow: $box-shadow;
+	padding: $card-padding;
+	width: $card-width;
+	box-shadow: $box-shadow;
 }
 
 .login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100%;
 }
-  
-:host ::ng-deep .login-card {
-  @include card-styles;
 
-  .p-card-body {
-    padding-top: 1rem;
-  }
+:host ::ng-deep .login-card {
+	@include card-styles;
+
+	.p-card-body {
+		padding-top: 1rem;
+	}
 }
-  
+
 .p-field {
-  margin-bottom: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+.password-field {
+	position: relative;
+	i {
+		position: absolute;
+		bottom: -3px;
+		right: 10px;
+	}
 }
 
 button[type="submit"] {
-  margin-top: $spacing;
-  width: 100%;
+	margin-top: $spacing;
+	width: 100%;
 }
 
 @media (max-width: $mobile-breakpoint) {
-  :host ::ng-deep .login-card {
-    @include card-styles;
-    width: 100%;
-  }
+	:host ::ng-deep .login-card {
+		@include card-styles;
+		width: 100%;
+	}
 }

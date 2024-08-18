@@ -29,6 +29,11 @@ export class LoginComponent {
 	}
 	public loginForm: FormGroup;
 	public errorMessage: string | null = null;
+	public showPassword = false;
+
+	public togglePasswordVisibility(): void {
+		this.showPassword = !this.showPassword;
+	}
 
 	private login(): void {
 		const email = this.loginForm.value.email.trim();

@@ -34,6 +34,16 @@ export class RegisterComponent {
 		);
 	}
 	public registerForm: FormGroup;
+	public showPassword = false;
+	public showConfirmPassword = false;
+
+	public togglePasswordVisibility(field: "password" | "confirmPassword"): void {
+		if (field === "password") {
+			this.showPassword = !this.showPassword;
+		} else {
+			this.showConfirmPassword = !this.showConfirmPassword;
+		}
+	}
 
 	private encryptPassword(password: string): string {
 		return CryptoES.SHA256(password).toString();
