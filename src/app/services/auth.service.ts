@@ -30,10 +30,16 @@ export class AuthService {
 		const encryptedPassword = this.encryptPassword(password);
 
 		return this.http
-			.post<Tokens>(`${this.apiUrl}/login`, {
-				email,
-				password: encryptedPassword,
-			})
+			.post<Tokens>(
+				`${this.apiUrl}/login`,
+				{
+					email,
+					password: encryptedPassword,
+				},
+				{
+					withCredentials: true,
+				},
+			)
 			.pipe(
 				tap((response: Tokens) => {
 					console.log("Tokens:", response);
@@ -109,7 +115,7 @@ export class AuthService {
 		}
 	}
 
-	public getToken(): string | null {
+	public getAccessToken(): string | null {
 		return localStorage.getItem("access_token");
 	}
 
@@ -139,5 +145,9 @@ export class AuthService {
 			console.log("no, access_token is not expired");
 			return of(true);
 		}
+	}
+
+	getRefreshTokenCookie(): Observable<string> {
+		return this.http.get(`${this.apiUrl}/get-cookie`, { responseType: "text", withCredentials: true });
 	}
 }

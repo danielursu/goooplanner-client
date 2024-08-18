@@ -35,6 +35,15 @@ export class CalendarComponent implements OnInit {
 	ngOnInit(): void {
 		this.userData = this.jwtService.getUserData();
 		this.profileColor = this.getRandomColor();
+
+		this.authService.getRefreshTokenCookie().subscribe({
+			next: (data) => {
+				console.log("refresh token from cookies: ", data);
+			},
+			error: (error) => {
+				console.error("Error fetching dogs:", error);
+			},
+		});
 	}
 
 	public userData: UserData | null | undefined;
