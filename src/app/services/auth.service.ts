@@ -57,7 +57,6 @@ export class AuthService {
 
 	public logout(): Observable<{ message: string }> {
 		localStorage.removeItem("access_token");
-		// remove the refresh_token from cookies
 		return this.http.post<{ message: string }>(`${this.apiUrl}/logout`, {}, { withCredentials: true });
 	}
 
@@ -94,10 +93,8 @@ export class AuthService {
 		return localStorage.getItem("access_token");
 	}
 
-	// need to get the refresh_token form cookies
 	public isRefreshTokenExpired(): boolean {
 		const token = this.cookie.get("refresh_token");
-		console.log(token);
 
 		if (!token) {
 			return false;
@@ -105,7 +102,6 @@ export class AuthService {
 		return true;
 	}
 
-	// need to get the refresh_token from cookies
 	public getNewAccessToken(): Observable<boolean> {
 		const refreshToken = this.cookie.get("refresh_token");
 
@@ -135,8 +131,7 @@ export class AuthService {
 		}
 	}
 
-	// I use cookie service to get the refresh_token from cookies
-	public getRefreshTokenCookie(): Observable<string> {
-		return this.http.get(`${this.apiUrl}/get-cookie`, { responseType: "text", withCredentials: true });
-	}
+	// public getRefreshTokenCookie(): Observable<string> {
+	// 	return this.http.get(`${this.apiUrl}/get-cookie`, { responseType: "text", withCredentials: true });
+	// }
 }
