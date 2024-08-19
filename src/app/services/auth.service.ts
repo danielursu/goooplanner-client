@@ -45,7 +45,6 @@ export class AuthService {
 					console.log("Tokens:", response);
 					if (response) {
 						localStorage.setItem("access_token", response.access_token);
-						// did not add refresh_token in the localstorage
 					}
 				}),
 				catchError((error) => {
@@ -95,6 +94,7 @@ export class AuthService {
 
 	public isRefreshTokenExpired(): boolean {
 		const token = this.cookie.get("refresh_token");
+		console.log(token);
 
 		if (!token) {
 			return false;
@@ -131,7 +131,7 @@ export class AuthService {
 		}
 	}
 
-	// public getRefreshTokenCookie(): Observable<string> {
-	// 	return this.http.get(`${this.apiUrl}/get-cookie`, { responseType: "text", withCredentials: true });
-	// }
+	public getRefreshTokenCookie(): Observable<string> {
+		return this.http.get(`${this.apiUrl}/get-cookie`, { responseType: "text", withCredentials: true });
+	}
 }

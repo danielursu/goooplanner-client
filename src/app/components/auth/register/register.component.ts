@@ -73,15 +73,15 @@ export class RegisterComponent {
 
 		console.log("Registration submitted", submissionData);
 
-		this.http.post("http://localhost:3000/auth/register", submissionData).subscribe(
-			(response) => {
+		this.http.post("http://localhost:3000/auth/register", submissionData).subscribe({
+			next: (response) => {
 				console.log("Response from server", response);
 				this.router.navigate(["/"]);
 			},
-			(error) => {
+			error: (error) => {
 				console.error("Error submitting form", error);
 			},
-		);
+		});
 	}
 
 	public onSubmit(): void {
