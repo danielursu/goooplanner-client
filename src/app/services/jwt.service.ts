@@ -15,7 +15,6 @@ export class JwtService {
 		const decodedToken = this.getDecodedToken();
 		if (decodedToken) {
 			return {
-				//userId: decodedToken.sub,
 				userId: decodedToken.id,
 				firstName: decodedToken.firstName,
 				lastName: decodedToken.lastName,
