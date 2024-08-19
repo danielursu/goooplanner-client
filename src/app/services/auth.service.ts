@@ -4,14 +4,11 @@ import { catchError, map, tap } from "rxjs/operators";
 import { Observable, of, throwError } from "rxjs";
 import CryptoES from "crypto-es";
 import { jwtDecode } from "jwt-decode";
-import { Router } from "@angular/router";
+import { CookieService } from "ngx-cookie-service";
 
 interface Tokens {
 	access_token: string;
 	refresh_token: string;
-}
-interface Message {
-	message: string;
 }
 
 @Injectable({
@@ -22,7 +19,7 @@ export class AuthService {
 
 	constructor(
 		private http: HttpClient,
-		private router: Router,
+		private cookie: CookieService,
 	) {}
 
 	private encryptPassword(password: string): string {
@@ -47,9 +44,8 @@ export class AuthService {
 				tap((response: Tokens) => {
 					console.log("Tokens:", response);
 					if (response) {
-						// no need to set the refresh_token in the localstorage since it is saved on the server
 						localStorage.setItem("access_token", response.access_token);
-						localStorage.setItem("refresh_token", response.refresh_token);
+						// did not add refresh_token in the localstorage
 					}
 				}),
 				catchError((error) => {
@@ -59,41 +55,15 @@ export class AuthService {
 			);
 	}
 
-	// log out needs to be handled on the server
-	public logout(): Observable<Message> {
+	public logout(): Observable<{ message: string }> {
 		localStorage.removeItem("access_token");
-		localStorage.removeItem("refresh_token");
-		return this.http.post<Message>(`${this.apiUrl}/logout`, {}, { withCredentials: true });
+		// remove the refresh_token from cookies
+		return this.http.post<{ message: string }>(`${this.apiUrl}/logout`, {}, { withCredentials: true });
 	}
 
 	public isLoggedIn(): boolean {
 		const token = localStorage.getItem("access_token");
 		return !!token;
-	}
-
-	// need to get the refresh_token form cookies
-	public isRefreshTokenExpired(): boolean {
-		const token = localStorage.getItem("refresh_token");
-
-		if (!token) {
-			return true;
-		}
-
-		try {
-			const decodedToken: { exp: number } = jwtDecode(token);
-			const tokenExpire = decodedToken.exp;
-
-			const currentTime = Math.floor(Date.now() / 1000);
-
-			if (currentTime > tokenExpire) {
-				return false;
-			} else {
-				return true;
-			}
-		} catch (error) {
-			console.error("Error decoding token", error);
-			return false;
-		}
 	}
 
 	private isAccessTokenExpired(): boolean {
@@ -124,14 +94,26 @@ export class AuthService {
 		return localStorage.getItem("access_token");
 	}
 
+	// need to get the refresh_token form cookies
+	public isRefreshTokenExpired(): boolean {
+		const token = this.cookie.get("refresh_token");
+		console.log(token);
+
+		if (!token) {
+			return false;
+		}
+		return true;
+	}
+
 	// need to get the refresh_token from cookies
 	public getNewAccessToken(): Observable<boolean> {
+		const refreshToken = this.cookie.get("refresh_token");
+
 		if (this.isAccessTokenExpired()) {
 			console.log("yes, access_token is expired");
-
 			return this.http
 				.post<Tokens>(`${this.apiUrl}/refresh`, {
-					refresh_token: localStorage.getItem("refresh_token"),
+					refresh_token: refreshToken,
 				})
 				.pipe(
 					map((response) => {
@@ -153,6 +135,7 @@ export class AuthService {
 		}
 	}
 
+	// I use cookie service to get the refresh_token from cookies
 	public getRefreshTokenCookie(): Observable<string> {
 		return this.http.get(`${this.apiUrl}/get-cookie`, { responseType: "text", withCredentials: true });
 	}
