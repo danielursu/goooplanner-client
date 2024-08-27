@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from "@angular/forms";
 import CryptoES from "crypto-es";
 import { Router } from "@angular/router";
@@ -15,6 +15,7 @@ import { HttpClient } from "@angular/common/http";
 	imports: [RouterModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule],
 	templateUrl: "./register.component.html",
 	styleUrl: "./register.component.scss",
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
 	private readonly fb = inject(FormBuilder);

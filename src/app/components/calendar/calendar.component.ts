@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
 import { CalendarOptions, DateSelectArg, EventInput } from "@fullcalendar/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
@@ -25,6 +25,7 @@ interface CalendarEvent extends EventInput {
 	imports: [FullCalendarModule, RouterModule, CommonModule, InitialsPipe],
 	templateUrl: "./calendar.component.html",
 	styleUrl: "./calendar.component.scss",
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarComponent implements OnInit {
 	private readonly jwtService = inject(JwtService);

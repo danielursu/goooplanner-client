@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { RouterModule } from "@angular/router";
@@ -15,6 +15,7 @@ import { AuthService } from "src/app/services/auth.service";
 	imports: [RouterModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule],
 	templateUrl: "./login.component.html",
 	styleUrl: "./login.component.scss",
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
 	private readonly fb = inject(FormBuilder);
