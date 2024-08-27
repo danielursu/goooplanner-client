@@ -1,7 +1,6 @@
 <div class="user-profile-container">
 	<div class="profile-section">
 		<div class="profile-pic" [ngStyle]="{ 'background-color': profileColor }">
-			<!-- {{ getInitials() }} -->
 			{{ userData | initials }}
 		</div>
 		<button class="logout-button" (click)="onLogOut()">Log out</button>
