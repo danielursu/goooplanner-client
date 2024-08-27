@@ -1,66 +1,95 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-// import * as CryptoJS from 'crypto-js';
-import CryptoES from 'crypto-es';
-import { Router } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from "@angular/forms";
+import CryptoES from "crypto-es";
+import { Router } from "@angular/router";
+import { RouterModule } from "@angular/router";
+import { ReactiveFormsModule } from "@angular/forms";
+import { InputTextModule } from "primeng/inputtext";
+import { CardModule } from "primeng/card";
+import { ButtonModule } from "primeng/button";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [ReactiveFormsModule, CardModule, ButtonModule, InputTextModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+	selector: "app-register",
+	standalone: true,
+	imports: [RouterModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule],
+	templateUrl: "./register.component.html",
+	styleUrl: "./register.component.scss",
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
+	private readonly fb = inject(FormBuilder);
+	private readonly router = inject(Router);
+	private readonly http = inject(HttpClient);
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.registerForm = this.fb.group(
-      {
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required]],
-        firstName: ['', [Validators.required]],
-        lastName: ['', [Validators.required]]
-      },
-      { validators: this.passwordMatchValidator });
-  }
+	constructor() {
+		this.registerForm = this.fb.group(
+			{
+				email: ["", [Validators.required, Validators.email]],
+				password: ["", [Validators.required, Validators.minLength(6)]],
+				confirmPassword: ["", [Validators.required]],
+				firstName: ["", [Validators.required]],
+				lastName: ["", [Validators.required]],
+			},
+			{ validators: this.passwordMatchValidator },
+		);
+	}
 
-  registerForm: FormGroup;
+	public registerForm: FormGroup;
+	public showPassword = false;
+	public showConfirmPassword = false;
 
-  private encryptPassword(password: string): string {
-    return CryptoES.SHA256(password).toString();
-  }
+	public togglePasswordVisibility(field: "password" | "confirmPassword"): void {
+		if (field === "password") {
+			this.showPassword = !this.showPassword;
+		} else {
+			this.showConfirmPassword = !this.showConfirmPassword;
+		}
+	}
 
-  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
+	private encryptPassword(password: string): string {
+		return CryptoES.SHA256(password).toString();
+	}
 
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      return { passwordMismatch: true };
-    }
+	private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+		const password = control.get("password");
+		const confirmPassword = control.get("confirmPassword");
 
-    return null;
-  }
+		if (password && confirmPassword && password.value !== confirmPassword.value) {
+			return { passwordMismatch: true };
+		}
 
-  onSubmit(): void {
-    if (this.registerForm.valid) {
-      const formValue = this.registerForm.value;
+		return null;
+	}
 
-      const encryptedPassword = this.encryptPassword(formValue.password);
+	private register(): void {
+		const formValue = this.registerForm.value;
 
-      const submissionData = {
-        ...formValue,
-        password: encryptedPassword,
-        confirmPassword: encryptedPassword
-      };
+		const encryptedPassword = this.encryptPassword(formValue.password);
 
-      console.log('Registration submitted', submissionData);
+		const submissionData = {
+			...formValue,
+			password: encryptedPassword,
+			confirmPassword: encryptedPassword,
+		};
 
-      this.router.navigate(['/']);
-    }
-  }
+		console.log("Registration submitted", submissionData);
+
+		this.http.post("http://localhost:3000/auth/register", submissionData).subscribe({
+			next: (response) => {
+				console.log("Response from server", response);
+				this.router.navigate(["/"]);
+			},
+			error: (error) => {
+				console.error("Error submitting form", error);
+			},
+		});
+	}
+
+	public onSubmit(): void {
+		if (this.registerForm.valid) {
+			console.log("Login submitted: ", this.registerForm.value);
+			this.register();
+		}
+	}
 }

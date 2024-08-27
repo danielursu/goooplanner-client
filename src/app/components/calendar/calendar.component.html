@@ -1,1 +1,10 @@
+<div class="user-profile-container">
+	<div class="profile-section">
+		<div class="profile-pic" [ngStyle]="{ 'background-color': profileColor }">
+			{{ userData | initials }}
+		</div>
+		<button class="logout-button" (click)="onLogOut()">Log out</button>
+	</div>
+</div>
+
 <full-calendar [options]="calendarOptions"></full-calendar>
