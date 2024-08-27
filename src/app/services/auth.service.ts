@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { catchError, map, tap } from "rxjs/operators";
 import { Observable, of, throwError } from "rxjs";
@@ -17,10 +17,8 @@ interface Tokens {
 export class AuthService {
 	private apiUrl = "http://localhost:3000/auth";
 
-	constructor(
-		private http: HttpClient,
-		private cookie: CookieService,
-	) {}
+	private readonly http = inject(HttpClient);
+	private readonly cookie = inject(CookieService);
 
 	private encryptPassword(password: string): string {
 		return CryptoES.SHA256(password).toString();
@@ -77,11 +75,7 @@ export class AuthService {
 
 			const currentTime = Math.floor(Date.now() / 1000);
 
-			if (currentTime > tokenExpire) {
-				return true;
-			} else {
-				return false;
-			}
+			return currentTime > tokenExpire;
 		} catch (error) {
 			console.error("Error decoding token", error);
 			return false;

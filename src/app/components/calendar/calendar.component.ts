@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { CalendarOptions, DateSelectArg, EventInput } from "@fullcalendar/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
@@ -11,6 +11,7 @@ import { JwtService } from "src/app/services/jwt.service";
 import { AuthService } from "src/app/services/auth.service";
 
 import { UserData } from "src/app/types/jwt.types";
+import { InitialsPipe } from "src/app/pipes/initials.pipe";
 
 interface CalendarEvent extends EventInput {
 	title: string;
@@ -21,20 +22,21 @@ interface CalendarEvent extends EventInput {
 @Component({
 	selector: "app-calendar",
 	standalone: true,
-	imports: [FullCalendarModule, RouterModule, CommonModule],
+	imports: [FullCalendarModule, RouterModule, CommonModule, InitialsPipe],
 	templateUrl: "./calendar.component.html",
 	styleUrl: "./calendar.component.scss",
 })
 export class CalendarComponent implements OnInit {
-	constructor(
-		private jwtService: JwtService,
-		private authService: AuthService,
-		private router: Router,
-	) {}
+	private readonly jwtService = inject(JwtService);
+	private readonly authService = inject(AuthService);
+	private readonly router = inject(Router);
+
+	constructor() {
+		this.profileColor = this.getRandomColor();
+	}
 
 	ngOnInit(): void {
 		this.userData = this.jwtService.getUserData();
-		this.profileColor = this.getRandomColor();
 	}
 
 	public userData: UserData | null | undefined;
@@ -66,19 +68,12 @@ export class CalendarComponent implements OnInit {
 		this.calendarOptions.events = this.events;
 	}
 
-	public getInitials() {
-		if (!this.userData || !this.userData.firstName || !this.userData.lastName) {
-			return "";
-		}
-
-		return `${this.userData.firstName.charAt(0)}${this.userData.lastName.charAt(0)}`;
-	}
 	private getRandomColor(): string {
-		const letters = "0123456789ABCDEF";
-		let color = "#";
-		for (let i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-		return color;
+		return (
+			"#" +
+			Math.floor(Math.random() * 16777215)
+				.toString(16)
+				.padStart(6, "0")
+		);
 	}
 }

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 import { Observable, tap } from "rxjs";
 
@@ -8,10 +8,8 @@ import { AuthService } from "../services/auth.service";
 	providedIn: "root",
 })
 export class AuthGuard implements CanActivate {
-	constructor(
-		private authService: AuthService,
-		private router: Router,
-	) {}
+	private readonly authService = inject(AuthService);
+	private readonly router = inject(Router);
 
 	public canActivate(): Observable<boolean> {
 		return this.authService.getNewAccessToken().pipe(

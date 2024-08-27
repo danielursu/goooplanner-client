@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from "@angular/forms";
 import CryptoES from "crypto-es";
 import { Router } from "@angular/router";
@@ -17,11 +17,11 @@ import { HttpClient } from "@angular/common/http";
 	styleUrl: "./register.component.scss",
 })
 export class RegisterComponent {
-	constructor(
-		private fb: FormBuilder,
-		private router: Router,
-		private http: HttpClient,
-	) {
+	private readonly fb = inject(FormBuilder);
+	private readonly router = inject(Router);
+	private readonly http = inject(HttpClient);
+
+	constructor() {
 		this.registerForm = this.fb.group(
 			{
 				email: ["", [Validators.required, Validators.email]],
@@ -33,6 +33,7 @@ export class RegisterComponent {
 			{ validators: this.passwordMatchValidator },
 		);
 	}
+
 	public registerForm: FormGroup;
 	public showPassword = false;
 	public showConfirmPassword = false;
