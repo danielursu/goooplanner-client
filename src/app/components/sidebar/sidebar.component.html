@@ -1,0 +1,29 @@
+<div class="sidebar" [class.expanded]="isExpanded">
+  <div class="sidebar-header">
+    <span class="app-name" *ngIf="isExpanded">gOOOplanner</span>
+    <button class="toggle-button" (click)="toggleSidebar.emit()">
+						<i class="pi pi-bars"></i>
+    </button>
+  </div>
+
+  <nav class="menu">
+    <a *ngFor="let item of menuItems"
+       [routerLink]="item.route"
+       routerLinkActive="active"
+       class="menu-item"
+       [pTooltip]="!isExpanded ? item.name : ''"
+       tooltipPosition="right">
+      <i class="pi" [ngClass]="item.icon"></i>
+						<span class="text" *ngIf="isExpanded">{{ item.name }}</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="profile" *ngIf="userData">
+      <div class="profile-picture" [style.background-color]="profileColor" (click)="menu.toggle($event)">
+        {{ userData | initials }}
+      </div>
+      <span class="profile-name" *ngIf="isExpanded">{{ userData.firstName }}</span>
+    </div>
+    <p-menu #menu [popup]="true" [model]="items"></p-menu>
+</div>

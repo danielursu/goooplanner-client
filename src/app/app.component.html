@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<div class="app-container">
+  <app-sidebar
+    [userData]="userData"
+    [isExpanded]="isSidebarExpanded"
+    (toggleSidebar)="onToggleSidebar()"
+    (logout)="onLogout()">
+  </app-sidebar>
+  <div class="main-content" [class.sidebar-expanded]="isSidebarExpanded">
+    <router-outlet></router-outlet>
+  </div>
+</div>
