@@ -1,0 +1,124 @@
+# Windsurf Editor Workspace Rules for Team Holiday Planner
+
+## Application Overview
+This application, **gOOOplanner**, is a web-based tool designed to manage and visualize team members' availability by tracking out-of-office and holiday schedules. It allows users to:
+
+- Log personal vacation or out-of-office days.
+- View team availability on a calendar-based interface.
+- Manage user accounts and permissions.
+- Generate summaries of team availability for specific timeframes.
+
+The application aims to provide a modern and responsive user experience.
+
+---
+
+## Main Features
+
+1. **User Management**:
+   - Role-based access control.
+   - Account creation, editing, and deletion.
+   - Authentication and authorization mechanisms.
+
+2. **Calendar-Based Interface**:
+   - Interactive calendar for visualizing schedules.
+   - Color-coded events for different users and categories.
+
+3. **Team Overview**:
+   - Aggregate availability views for specified time periods.
+   - Alerts for critical low-resource periods.
+
+4. **Data Persistence**:
+   - Store event and user data using PostgreSQL.
+   - Efficient querying with TypeORM.
+
+---
+
+## Tech Stack
+
+### Frontend
+- **Framework**: Angular
+- **Styling**: SCSS with utility-first design principles (e.g., Tailwind CSS or custom utilities).
+- **State Management**: NgRx for scalable state management.
+- **Component Library**: PrimeNG for prebuilt UI components.
+
+### Backend
+- **Framework**: NestJS
+- **Database**: PostgreSQL
+- **ORM**: TypeORM
+- **Validation**: `class-validator` and `class-transformer`.
+- **Authentication**: JWT-based authentication with role guards.
+
+---
+
+## Development Guidelines
+
+### Code Style and Structure
+- Follow Angular and NestJS best practices for modular and maintainable codebases.
+- Use consistent naming conventions:
+  - **PascalCase** for components, services, modules, and classes.
+  - **camelCase** for variables and functions.
+  - **kebab-case** for filenames and routes.
+- Modularize features into separate, self-contained modules:
+  ```
+  src/
+  ├── app/
+  │   ├── components/
+  │   ├── services/
+  │   ├── modules/
+  │   └── shared/
+  ├── database/
+  ├── auth/
+  └── utils/
+  ```
+- Always define return types for methods in TypeScript to ensure type safety and clarity.
+- Use access modifiers (`private`, `protected`, `public`) explicitly in classes to enforce proper encapsulation.
+
+### API Design
+- RESTful API principles.
+- Adhere to HTTP status codes for response consistency.
+- Centralized error handling using NestJS exception filters.
+- Secure API endpoints with guards and decorators.
+
+### UI and UX
+- Use Material Design principles for a modern user experience.
+- Integrate PrimeNG components for rapid UI development.
+- Ensure accessibility compliance (WCAG 2.1 standards).
+- Maintain responsiveness across devices (mobile-first approach).
+
+---
+
+## Security Best Practices
+- Secure user passwords using hashing (`bcrypt`).
+- Validate all user inputs at both frontend and backend.
+- Implement rate-limiting to mitigate brute-force attacks.
+- Use HTTPS for all communication.
+
+---
+
+## Testing Standards
+- **Frontend**:
+  - Unit tests for components and services using Karma and Jasmine.
+  - End-to-end testing with Cypress.
+
+- **Backend**:
+  - Unit and integration tests using Jest.
+  - Mock database operations to isolate test cases.
+
+---
+
+## Version Control and Collaboration
+- Follow semantic versioning for releases.
+- Use Git with the following commit message prefixes:
+  - `feat:` for new features.
+  - `fix:` for bug fixes.
+  - `test:` for test-related updates.
+  - `docs:` for documentation updates.
+- Maintain a detailed changelog.
+
+---
+
+## Deployment
+- Use Docker for containerization.
+- Set up CI/CD pipelines with GitHub Actions or GitLab CI for automated testing and deployment.
+- Monitor application performance with tools like Prometheus and Grafana.
+
