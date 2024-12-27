@@ -1,11 +1,30 @@
 <div class="app-container">
-  <app-sidebar
-    [userData]="userData"
-    [isExpanded]="isSidebarExpanded"
-    (toggleSidebar)="onToggleSidebar()"
-    (logout)="onLogout()">
+  <app-sidebar 
+    [isExpanded]="isSidebarExpanded()" 
+    [userData]="userData" 
+    [profileColor]="profileColor"
+    (toggleSidebar)="toggleSidebar()">
   </app-sidebar>
-  <div class="main-content" [class.sidebar-expanded]="isSidebarExpanded">
-    <router-outlet></router-outlet>
+
+  <div class="app-content" [class.sidebar-expanded]="isSidebarExpanded()">
+    <div class='calendar-container'>
+      <div class='calendar-main'>
+        <full-calendar 
+          *ngIf="calendarVisible()" 
+          [options]="calendarOptions()"
+          class="calendar-view">
+          <ng-template #eventContent let-arg>
+            <div class="event-template">
+              <i [class]="getEventIcon(arg.event)"></i>
+              <span class="event-time">{{ arg.timeText }}</span>
+              <span class="event-title">{{ arg.event.title }}</span>
+            </div>
+          </ng-template>
+        </full-calendar>
+      </div>
+    </div>
   </div>
 </div>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast></p-toast>

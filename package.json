@@ -24,6 +24,8 @@
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.8",
+    "@fullcalendar/list": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
     "crypto-es": "^2.1.0",
     "jwt-decode": "^4.0.0",
     "ngx-cookie-service": "^18.0.0",
