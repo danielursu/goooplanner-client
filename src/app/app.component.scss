@@ -1,6 +1,6 @@
 .app-container {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 16px);
   overflow: hidden;
 }
 
@@ -18,14 +18,13 @@
 
 .calendar-main {
   flex: 1;
-  padding: 1.5rem;
   min-width: 0;
 }
 
 .calendar-view {
   height: 100%;
   background: var(--surface-card);
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--card-shadow);
 }
