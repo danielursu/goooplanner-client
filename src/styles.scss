@@ -1,3 +1,238 @@
+// Import external styles
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
+
+// Variables
+$color-primary: #3f51b5;
+$color-secondary: #ff4081;
+$color-text: #212121;
+$color-border: #e0e0e0;
+$color-white: #ffffff;
+$color-dark-bg: #1f1f1f;
+$color-dark-surface: #2d2d2d;
+$color-dark-border: #444444;
+$color-dark-text: #e0e0e0;
+$color-blue-accent: #90caf9;
+$color-today: #2962ff;
+
+$border-radius: 6px;
+$transition-default: background-color 0.3s ease, color 0.3s ease;
+$card-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+
+// CSS Custom Properties
+:root {
+  --primary-color: #{$color-primary};
+  --secondary-color: #{$color-secondary};
+  --text-color: #{$color-text};
+  --border-color: #{$color-border};
+  --card-shadow: #{$card-shadow};
+  --border-radius: #{$border-radius};
+  --surface-ground: #f8f9fa;
+  --surface-card: #{$color-white};
+  --surface-border: #{$color-border};
+}
+
+// Base styles
+body {
+  background-color: $color-white;
+  color: var(--text-color);
+  transition: $transition-default;
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  &.theme-dark {
+    --primary-color: #7986cb;
+    --secondary-color: #ff80ab;
+    background-color: $color-dark-bg;
+    color: $color-dark-text;
+    --border-color: #{$color-dark-border};
+    --surface-ground: #121212;
+    --surface-card: #{$color-dark-surface};
+    --surface-border: #333;
+  }
+
+  &.theme-light {
+    background-color: $color-white;
+    color: $color-text;
+    --border-color: #{$color-border};
+    --surface-ground: #f8f9fa;
+    --surface-card: #{$color-white};
+    --surface-border: #{$color-border};
+  }
+}
+
+// PrimeNG Components
+.p-component {
+  background-color: $color-white;
+  color: var(--text-color);
+
+  body.theme-dark & {
+    background-color: $color-dark-surface;
+  }
+}
+
+.p-card {
+  background-color: $color-white;
+  border-color: var(--border-color);
+
+  body.theme-dark & {
+    background-color: $color-dark-surface;
+    border-color: $color-dark-border;
+  }
+}
+
+.p-button {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+
+  &:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+}
+
+.p-dialog {
+  background-color: $color-white;
+  color: var(--text-color);
+  border-color: var(--border-color);
+
+  body.theme-dark & {
+    background-color: $color-dark-surface;
+    color: $color-dark-text;
+    border-color: $color-dark-border;
+  }
+
+  &-content {
+    background-color: $color-white;
+    color: var(--text-color);
+
+    body.theme-dark & {
+      background-color: $color-dark-surface;
+      color: $color-dark-text;
+    }
+  }
+}
+
+// Calendar Styles
+.fc {
+  // Calendar table styles
+  table {
+    border-collapse: collapse;
+  }
+
+  // Common border styles
+  $border-light: rgba(160, 160, 160, 0.4);
+  $border-dark: rgba(224, 224, 224, 0.4);
+
+  %calendar-border {
+    border-color: $border-light !important;
+  }
+
+  th, td,
+  .fc-scrollgrid,
+  .fc-theme-standard td,
+  .fc-theme-standard th,
+  .fc-theme-standard .fc-scrollgrid {
+    @extend %calendar-border;
+  }
+
+  // Dark theme overrides
+  body.theme-dark & {
+    th, td,
+    .fc-scrollgrid,
+    .fc-theme-standard td,
+    .fc-theme-standard th,
+    .fc-theme-standard .fc-scrollgrid {
+      border-color: $border-dark !important;
+    }
+  }
+}
+
+// Calendar Dark Theme Specific Styles
+body.theme-dark .fc-theme-standard {
+  .fc-daygrid-day-number,
+  .fc-toolbar-title,
+  .fc-event-title {
+    color: $color-dark-text;
+  }
+
+  .fc-day-today {
+    background: $color-today !important;
+  }
+}
+
+// Sidebar Styles
+.sidebar {
+  $hover-bg: rgba(255, 255, 255, 0.05);
+  $active-bg: rgba(144, 202, 249, 0.1);
+
+  body.theme-dark & {
+    background: #181818;
+
+    * {
+      color: $color-dark-text;
+    }
+  }
+
+  &-header {
+    body.theme-dark & {
+      color: $color-dark-text;
+    }
+  }
+
+  .menu-item {
+    body.theme-dark & {
+      color: $color-dark-text;
+
+      &:hover {
+        background: $hover-bg;
+        color: $color-blue-accent;
+      }
+
+      &.active {
+        background: $active-bg;
+        color: $color-blue-accent;
+      }
+    }
+  }
+
+  &-footer {
+    .theme-button {
+      body.theme-dark & {
+        color: $color-dark-text;
+
+        &:hover {
+          background: $hover-bg;
+          color: $color-blue-accent;
+        }
+      }
+
+      .theme-text {
+        body.theme-dark & {
+          color: $color-dark-text;
+        }
+      }
+    }
+
+    .profile {
+      &-name {
+        body.theme-dark & {
+          color: $color-dark-text;
+        }
+      }
+
+      body.theme-dark &:hover {
+        background: $hover-bg;
+        color: $color-blue-accent;
+      }
+    }
+  }
+
+  .toggle-button {
+    body.theme-dark & {
+      color: $color-dark-text;
+    }
+  }
+}

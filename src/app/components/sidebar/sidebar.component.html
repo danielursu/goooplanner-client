@@ -2,7 +2,7 @@
   <div class="sidebar-header">
     <span class="app-name" *ngIf="isExpanded">gOOOplanner</span>
     <button class="toggle-button" (click)="toggleSidebar.emit()">
-						<i class="pi pi-bars"></i>
+      <i class="pi pi-bars"></i>
     </button>
   </div>
 
@@ -14,16 +14,26 @@
        [pTooltip]="!isExpanded ? item.name : ''"
        tooltipPosition="right">
       <i class="pi" [ngClass]="item.icon"></i>
-						<span class="text" *ngIf="isExpanded">{{ item.name }}</span>
+      <span class="text" *ngIf="isExpanded">{{ item.name }}</span>
     </a>
   </nav>
 
   <div class="sidebar-footer">
-    <div class="profile" *ngIf="userData">
-      <div class="profile-picture" [style.background-color]="profileColor" (click)="menu.toggle($event)">
-        {{ userData | initials }}
+    <div class="footer-content">
+      <div class="theme-toggle">
+        <button class="theme-button" (click)="toggleTheme()">
+          <i class="pi" [ngClass]="{'pi-sun': isDarkTheme, 'pi-moon': !isDarkTheme}"></i>
+          <span class="theme-text" *ngIf="isExpanded">{{ isDarkTheme ? 'Light Mode' : 'Dark Mode' }}</span>
+        </button>
       </div>
-      <span class="profile-name" *ngIf="isExpanded">{{ userData.firstName }}</span>
+      
+      <div class="profile" *ngIf="userData">
+        <div class="profile-picture" [style.background-color]="profileColor" (click)="menu.toggle($event)">
+          {{ userData | initials }}
+        </div>
+        <span class="profile-name" *ngIf="isExpanded">{{ userData.firstName }}</span>
+      </div>
     </div>
     <p-menu #menu [popup]="true" [model]="items"></p-menu>
+  </div>
 </div>

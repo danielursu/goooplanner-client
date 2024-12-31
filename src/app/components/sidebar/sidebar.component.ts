@@ -22,6 +22,8 @@ export class SidebarComponent {
   @Input() profileColor = '';
   @Output() toggleSidebar = new EventEmitter<void>();
 
+  isDarkTheme = false;
+
   public menuItems = [
     { name: 'Calendar', icon: 'pi pi-calendar', route: '/calendar' },
     { name: 'Team', icon: 'pi pi-users', route: '/team' },
@@ -41,7 +43,6 @@ export class SidebarComponent {
       label: 'Logout',
       icon: 'pi pi-power-off',
       command: () => {
-        // Add your logout logic here
         console.log('Logout clicked');
       }
     }
@@ -49,7 +50,35 @@ export class SidebarComponent {
 
   ngOnInit() {
     if (!this.profileColor) {
-      this.profileColor = '#673ab7'; // Default background color
+      this.profileColor = '#673ab7';
     }
+    this.loadThemePreference();
+  }
+
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    this.applyTheme();
+    this.saveThemePreference();
+  }
+
+  private applyTheme() {
+    const body = document.body;
+    if (this.isDarkTheme) {
+      body.classList.remove('theme-light');
+      body.classList.add('theme-dark');
+    } else {
+      body.classList.remove('theme-dark');
+      body.classList.add('theme-light');
+    }
+  }
+
+  private loadThemePreference() {
+    const savedTheme = localStorage.getItem('theme');
+    this.isDarkTheme = savedTheme === 'dark';
+    this.applyTheme();
+  }
+
+  private saveThemePreference() {
+    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
   }
 }
