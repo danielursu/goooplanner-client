@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.1.0] - 2024-01-23
 ### Added
 - Calendar view with FullCalendar integration
 - Event management (create, edit, delete)
