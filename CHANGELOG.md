@@ -18,6 +18,7 @@
 - Enhanced dialog layouts and forms
 - Optimized sidebar navigation
 - Set Monday as the default start of the week in the calendar view.
+- Changed theme from Lara to Aura
 
 ### Fixed
 - Event dialog styling and layout
