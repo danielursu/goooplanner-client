@@ -1,129 +1,290 @@
+@import '../../../styles.scss';
+
+// Variables
+$transition-duration: 0.3s;
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+$avatar-size: 40px;
+
+// Mixins
+@mixin hover-state {
+  background: rgba(var(--p-primary-color-rgb), 0.1);  
+  color: var(--p-primary-color);
+}
+
+@mixin focus-visible {
+  outline: 2px solid var(--p-primary-color);
+  outline-offset: 2px;
+}
+
+// Base sidebar styles
 .sidebar {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
+  width: $sidebar-collapsed-width;
+  background: var(--surface-overlay);
+  box-shadow: var(--card-shadow);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  transition: width $transition-duration $transition-timing;
+
+  &--expanded {
+    width: $sidebar-expanded-width;
+  }
+}
+
+// Header styles
+.sidebar-header {
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 64px;
   background: var(--surface-card);
-  border-right: 1px solid var(--surface-border);
-  transition: width 0.3s ease;
-  width: 72px;
+  border-bottom: 1px solid var(--surface-border);
+}
 
-  &.expanded {
-    width: 250px;
+.app-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--surface-900);
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all $transition-duration ease;
+
+  .sidebar--expanded & {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toggle-button {
+  background: transparent;
+  border: none;
+  color: var(--surface-900);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: var(--border-radius);
+  transition: all $transition-duration ease;
+
+  &:hover:not(:disabled) {
+    @include hover-state;
   }
 
-  .sidebar-header {
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: space-between;
-    border-bottom: 1px solid var(--surface-border);
+  &:focus-visible {
+    @include focus-visible;
   }
 
-  .toggle-button {
-    background: none;
-    border: none;
-    color: var(--text-color);
-    cursor: pointer;
-    padding: 0.5rem;
+  &__icon {
+    font-size: 1.25rem;
+  }
+}
+
+// Menu styles
+.menu {
+  padding: 0.75rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: var(--surface-card);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: var(--surface-900);
+  text-decoration: none;
+  gap: 1rem;
+  min-height: 44px;
+  border-radius: var(--border-radius);
+  position: relative;
+  font-weight: 500;
+  transition: all $transition-duration ease;
+
+  &:hover {
+    @include hover-state;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+
+  &.menu-item--active {
+    background: var(--p-primary-color);
+    color: var(--p-primary-color);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 24px;
+      width: 3px;
+      background: var(--p-primary-color);
+      border-radius: 0 4px 4px 0;
+    }
+  }
+
+  &__icon {
+    font-size: 1.25rem;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  &__text {
+    white-space: nowrap;
+    font-size: 0.9375rem;
+  }
+}
+
+// Footer styles
+.sidebar-footer {
+  margin-top: auto;
+  background: var(--surface-card);
+  border-top: 1px solid var(--surface-border);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+
+// Theme toggle styles
+.theme-toggle {
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
+
+.theme-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  color: var(--surface-900);
+  gap: 1rem;
+  min-height: 44px;
+  border-radius: var(--border-radius);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all $transition-duration ease;
+
+  &:hover:not(:disabled) {
+    @include hover-state;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+
+  &__icon {
+    font-size: 1.25rem;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  &__text {
+    white-space: nowrap;
+    font-size: 0.9375rem;
+  }
+}
+
+// Profile styles
+.profile {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+
+  &:hover {
+    @include hover-state;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+
+  .sidebar--expanded & {
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+
+  &__avatar {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
 
-    &:hover {
-      color: var(--primary-color);
-    }
-
-    .expanded & {
-      transform: rotate(180deg);
-    }
-  }
-
-  .menu {
-    padding: 1rem 0;
-    flex-grow: 1;
-
-    .menu-item {
-      display: flex;
-      align-items: center;
-      padding: 1rem 1.25rem;
-      color: var(--text-color);
-      text-decoration: none;
-      gap: 0.75rem;
-      transition: all 0.2s ease;
-			border-radius: 0.5rem;
-
-
+    ::ng-deep .p-avatar {
+      width: $avatar-size;
+      height: $avatar-size;
+      font-size: 1rem;
+      font-weight: 600;
+      box-shadow: var(--card-shadow);
+      transition: transform $transition-duration ease;
+      
       &:hover {
-        background: var(--surface-hover);
-				color: var(--primary-color);
-			}
-
-      &.active {
-        background: var(--primary-color-translucent);
-        color: var(--primary-color);
-			}
-
-      .text {
-        white-space: nowrap;
-			}
-    }
-		}
-
-  .sidebar-footer {
-    border-top: 1px solid var(--surface-border);
-		padding: 1rem;
-    margin-bottom: 1rem;
-    display: flex;
-
-    .profile {
-			display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      cursor: pointer;
-      border-radius: 0.5rem;
-			transition: background-color 0.2s ease;
-
-      &:hover {
-        background: var(--surface-hover);
-			}
-
-      .profile-picture {
-        width: 40px;
-        height: 40px;
-        border-radius: 0.75rem;
-				display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 500;
-        font-size: 1rem;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-			}
-
-      .profile-name {
-        color: var(--text-color);
-        font-size: 1.1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        transform: scale(1.05);
       }
     }
   }
-  .collapse-button {
-    background: none;
-    border: none;
-    color: var(--text-color);
-		cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-		transition: transform 0.3s ease;
-		width: auto;
 
-		&:hover {
-				color: var(--primary-color);
-		}
-	}
+  &__name {
+    color: var(--surface-900);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+}
+
+// Profile menu styles
+:host ::ng-deep .profile-menu {
+  .p-menu {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    min-width: 200px;
+    
+    .p-menuitem-link {
+      padding: 0.75rem 1rem;
+      border-radius: var(--border-radius);
+      margin: 0.25rem;
+      transition: all $transition-duration ease;
+
+      &:hover {
+        @include hover-state;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--p-primary-color);
+        outline-offset: -2px;
+      }
+
+      .p-menuitem-icon {
+        color: var(--p-text-color-secondary);
+      }
+
+      .p-menuitem-text {
+        color: var(--surface-900);
+        font-weight: 500;
+      }
+    }
+  }
 }

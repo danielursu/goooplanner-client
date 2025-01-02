@@ -1,0 +1,143 @@
+<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form" role="form">
+  <div class="event-form__field">
+    <label 
+      for="title" 
+      class="event-form__field-label"
+      [class.event-form__field-label--error]="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
+      Title
+    </label>
+    <input 
+      id="title" 
+      type="text" 
+      pInputText 
+      formControlName="title" 
+      class="w-full"
+      [attr.aria-invalid]="eventForm.get('title')?.invalid && eventForm.get('title')?.touched"
+      [attr.aria-describedby]="eventForm.get('title')?.invalid ? 'titleError' : null">
+    <small 
+      id="titleError" 
+      class="event-form__field-error" 
+      *ngIf="eventForm.get('title')?.invalid && eventForm.get('title')?.touched"
+      role="alert">
+      {{ getErrorMessage('title') }}
+    </small>
+  </div>
+
+  <div class="event-form__field">
+    <label 
+      for="type" 
+      class="event-form__field-label"
+      [class.event-form__field-label--error]="eventForm.get('type')?.invalid && eventForm.get('type')?.touched">
+      Event Type
+    </label>
+    <p-dropdown 
+      id="type"
+      [options]="eventTypeOptions"
+      formControlName="type"
+      optionLabel="label"
+      optionValue="value"
+      [attr.aria-invalid]="eventForm.get('type')?.invalid && eventForm.get('type')?.touched"
+      [attr.aria-describedby]="eventForm.get('type')?.invalid ? 'typeError' : null"
+      class="w-full">
+    </p-dropdown>
+    <small 
+      id="typeError" 
+      class="event-form__field-error" 
+      *ngIf="eventForm.get('type')?.invalid && eventForm.get('type')?.touched"
+      role="alert">
+      {{ getErrorMessage('type') }}
+    </small>
+  </div>
+
+  <div class="event-form__field">
+    <label 
+      for="start" 
+      class="event-form__field-label"
+      [class.event-form__field-label--error]="eventForm.get('start')?.invalid && eventForm.get('start')?.touched">
+      Start Date
+    </label>
+    <p-calendar 
+      id="start"
+      formControlName="start"
+      [showTime]="true"
+      [showIcon]="true"
+      [attr.aria-invalid]="eventForm.get('start')?.invalid && eventForm.get('start')?.touched"
+      [attr.aria-describedby]="eventForm.get('start')?.invalid ? 'startError' : null"
+      class="w-full"
+      dateFormat="dd/mm/yy"
+      [showButtonBar]="true"
+      [firstDayOfWeek]="1">
+    </p-calendar>
+    <small 
+      id="startError" 
+      class="event-form__field-error" 
+      *ngIf="eventForm.get('start')?.invalid && eventForm.get('start')?.touched"
+      role="alert">
+      {{ getErrorMessage('start') }}
+    </small>
+  </div>
+
+  <div class="event-form__field">
+    <label 
+      for="end" 
+      class="event-form__field-label"
+      [class.event-form__field-label--error]="eventForm.get('end')?.invalid && eventForm.get('end')?.touched">
+      End Date
+    </label>
+    <p-calendar 
+      id="end"
+      formControlName="end"
+      [showTime]="true"
+      [showIcon]="true"
+      [minDate]="eventForm.get('start')?.value"
+      [attr.aria-invalid]="eventForm.get('end')?.invalid && eventForm.get('end')?.touched"
+      [attr.aria-describedby]="eventForm.get('end')?.invalid ? 'endError' : null"
+      class="w-full"
+      dateFormat="dd/mm/yy"
+      [showButtonBar]="true"
+      [firstDayOfWeek]="1">
+    </p-calendar>
+    <small 
+      id="endError" 
+      class="event-form__field-error" 
+      *ngIf="eventForm.get('end')?.invalid && eventForm.get('end')?.touched"
+      role="alert">
+      {{ getErrorMessage('end') }}
+    </small>
+  </div>
+
+  <div class="event-form__field">
+    <label for="description" class="event-form__field-label">Description</label>
+    <textarea 
+      id="description"
+      pInputTextarea
+      formControlName="description"
+      [rows]="3"
+      class="w-full"
+      placeholder="Add event details (optional)">
+    </textarea>
+  </div>
+
+  <div class="event-form__footer">
+    <p-button 
+      label="Cancel" 
+      (onClick)="onCancel()" 
+      styleClass="p-button-text"
+      [attr.aria-label]="'Cancel ' + (data.event ? 'editing' : 'creating') + ' event'">
+    </p-button>
+    <p-button 
+      [label]="data.event ? 'Update' : 'Create'"
+      type="submit"
+      [disabled]="!eventForm.valid"
+      styleClass="p-button-primary"
+      [attr.aria-label]="(data.event ? 'Update' : 'Create') + ' event'">
+    </p-button>
+    <p-button 
+      *ngIf="data.event"
+      label="Delete" 
+      (onClick)="onDelete()"
+      styleClass="p-button-danger p-button-text"
+      [attr.aria-label]="'Delete event'">
+    </p-button>
+  </div>
+</form>

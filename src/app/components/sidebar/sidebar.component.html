@@ -1,29 +1,58 @@
-<div class="sidebar" [class.expanded]="isExpanded">
+<div class="sidebar" [class.sidebar--expanded]="isExpanded" role="navigation" aria-label="Main Navigation">
   <div class="sidebar-header">
     <span class="app-name" *ngIf="isExpanded">gOOOplanner</span>
-    <button class="toggle-button" (click)="toggleSidebar.emit()">
-						<i class="pi pi-bars"></i>
+    <button 
+      class="toggle-button" 
+      (click)="toggleSidebar.emit()"
+      aria-label="Toggle Sidebar"
+      [attr.aria-expanded]="isExpanded">
+      <i class="pi pi-bars toggle-button__icon"></i>
     </button>
   </div>
 
   <nav class="menu">
     <a *ngFor="let item of menuItems"
        [routerLink]="item.route"
-       routerLinkActive="active"
+       routerLinkActive="menu-item--active"
        class="menu-item"
        [pTooltip]="!isExpanded ? item.name : ''"
-       tooltipPosition="right">
-      <i class="pi" [ngClass]="item.icon"></i>
-						<span class="text" *ngIf="isExpanded">{{ item.name }}</span>
+       tooltipPosition="right"
+       [attr.aria-label]="item.name"
+       [attr.aria-current]="item.route === currentRoute ? 'page' : undefined">
+      <i class="pi menu-item__icon" [ngClass]="item.icon"></i>
+      <span class="menu-item__text" *ngIf="isExpanded">{{ item.name }}</span>
     </a>
   </nav>
 
   <div class="sidebar-footer">
-    <div class="profile" *ngIf="userData">
-      <div class="profile-picture" [style.background-color]="profileColor" (click)="menu.toggle($event)">
-        {{ userData | initials }}
+    <div class="footer-content">
+      <div class="theme-toggle">
+        <button 
+          class="theme-button" 
+          (click)="toggleTheme()"
+          [attr.aria-label]="isDarkTheme ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+          <i class="pi theme-button__icon" [ngClass]="{'pi-sun': isDarkTheme, 'pi-moon': !isDarkTheme}"></i>
+          <span class="theme-button__text" *ngIf="isExpanded">{{ isDarkTheme ? 'Light Mode' : 'Dark Mode' }}</span>
+        </button>
       </div>
-      <span class="profile-name" *ngIf="isExpanded">{{ userData.firstName }}</span>
+      
+      <div class="profile" 
+           *ngIf="userData" 
+           role="button" 
+           tabindex="0" 
+           (click)="menu.toggle($event)"
+           (keydown.enter)="menu.toggle($event)">
+        <div class="profile__avatar">
+          <p-avatar 
+            [label]="userData | initials" 
+            [style]="{'background-color': profileColor}"
+            [attr.aria-label]="'Profile menu for ' + userData.firstName"
+            shape="circle">
+          </p-avatar>
+        </div>
+        <span class="profile__name" *ngIf="isExpanded">{{ userData.firstName }}</span>
+      </div>
     </div>
-    <p-menu #menu [popup]="true" [model]="items"></p-menu>
+    <p-menu #menu [popup]="true" [model]="items" [styleClass]="'profile-menu'"></p-menu>
+  </div>
 </div>
