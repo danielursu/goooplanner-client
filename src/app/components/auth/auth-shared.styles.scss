@@ -1,0 +1,224 @@
+// Shared Variables
+$card-width: 700px;
+$card-padding: 2rem;
+$spacing: 1rem;
+$mobile-breakpoint: 730px;
+
+// Shared Mixins
+@mixin card-styles {
+  padding: $card-padding;
+  width: $card-width;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: var(--p-surface-card);
+  border-radius: var(--p-border-radius);
+  transition: var(--p-transition-duration);
+}
+
+@mixin input-styles {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--p-surface-ground);
+  border: 1px solid var(--p-surface-border);
+  border-radius: var(--p-border-radius);
+  color: var(--p-text-color);
+  transition: border-color var(--p-transition-duration);
+
+  &:hover, &:focus {
+    border-color: var(--p-primary-color);
+  }
+}
+
+@mixin button-styles {
+  background: var(--p-primary-color);
+  color: var(--p-primary-text-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--p-border-radius);
+  cursor: pointer;
+  transition: background-color var(--p-transition-duration);
+
+  &:hover {
+    background: var(--p-primary-color-hover);
+  }
+
+  &:active {
+    background: var(--p-primary-color-active);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin password-toggle-styles {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--p-text-color-secondary);
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+
+  &:hover {
+    color: var(--p-text-color);
+    background: var(--p-surface-100);
+  }
+}
+
+@mixin error-message-styles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background-color: var(--p-error-color-10);
+  border: 1px solid var(--p-error-color-20);
+  border-radius: 4px;
+  color: var(--p-error-color);
+}
+
+// Shared Classes
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: $spacing;
+  background: var(--p-surface-ground);
+}
+
+.auth-card {
+  @include card-styles;
+  
+  .card-header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h1 {
+      color: var(--p-text-color);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: var(--p-text-color-secondary);
+      margin: 0;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--p-text-color);
+    }
+
+    input {
+      @include input-styles;
+    }
+
+    .error-message {
+      color: var(--p-error-color);
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .submit-button {
+    @include button-styles;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .auth-links {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: var(--p-text-color-secondary);
+
+    a {
+      color: var(--p-primary-color);
+      text-decoration: none;
+      margin: 0 0.5rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.auth-field {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--p-text-color);
+    font-weight: 500;
+  }
+
+  input {
+    @include input-styles;
+  }
+}
+
+.password-field {
+  position: relative;
+
+  input {
+    padding-right: 2.5rem;
+  }
+
+  .password-toggle {
+    @include password-toggle-styles;
+  }
+}
+
+.error-message {
+  @include error-message-styles;
+}
+
+.auth-link {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--p-text-color);
+
+  a {
+    color: var(--p-primary-color);
+    text-decoration: none;
+    margin-left: 0.5rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--p-primary-color-hover);
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth-button {
+  @include button-styles;
+  margin-top: $spacing;
+}
+
+.p-error {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--p-error-color);
+  font-size: 0.875rem;
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .auth-card {
+    width: 100%;
+    max-width: $card-width;
+  }
+}

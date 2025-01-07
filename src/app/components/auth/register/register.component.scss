@@ -1,54 +1,51 @@
-$card-width: 700px;
-$card-padding: 2rem;
-$spacing: 1rem;
-$box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-$mobile-breakpoint: 730px;
-
-// Mixins
-@mixin card-styles {
-	padding: $card-padding;
-	width: $card-width;
-	box-shadow: $box-shadow;
-}
+@use '../auth-shared.styles' as auth;
 
 .register-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	width: 100%;
+  @extend .auth-container;
 }
 
 :host ::ng-deep .register-card {
-	@include card-styles;
-
-	.p-card-body {
-		padding-top: 1rem;
-	}
+  @extend .auth-card;
 }
 
 .p-field {
-	margin-bottom: 1.5rem;
+  @extend .auth-field;
 }
 
 .password-field {
-	position: relative;
-	i {
-		position: absolute;
-		bottom: -3px;
-		right: 10px;
-		cursor: pointer;
-	}
+  @extend .password-field;
 }
 
-button[type="submit"] {
-	width: 100%;
-	margin-top: $spacing;
+.error-message {
+  @extend .error-message;
 }
 
-@media (max-width: $mobile-breakpoint) {
-	:host ::ng-deep .register-card {
-		@include card-styles;
-		width: 100%;
-	}
+.form-footer {
+  margin-top: auth.$spacing * 2;
+  text-align: center;
+
+  p {
+    @extend .auth-link;
+    margin-bottom: auth.$spacing;
+  }
+}
+
+.submit-button {
+  @extend .auth-button;
+}
+
+.p-error {
+  @extend .p-error;
+  color: #dc3545; // Explicit error color as fallback
+}
+
+@media (max-width: auth.$mobile-breakpoint) {
+  .register-container {
+    padding: 1rem;
+  }
+
+  :host ::ng-deep .register-card {
+    width: 100%;
+    padding: 1.5rem;
+  }
 }

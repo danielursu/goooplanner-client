@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.1.1] - 2025-01-07
+### Added
+- TypeScript improvements
+- Calendar component fixes
+- Error handling improvements
+- Added proper TypeScript type checking for calendar events
+- Enhanced event handling with improved error messages
+- Added proper dialog mode handling for event creation/editing
+
+### Changed
+- Updated calendar component to use proper TypeScript types
+- Improved event service integration
+- Enhanced error handling in calendar operations
+
+### Fixed
+- Fixed TypeScript errors in calendar component
+- Resolved event handling type mismatches
+- Fixed dialog mode handling in calendar component
+- Improved event submission logic
+- Enhanced error handling for event operations
+
+### Security
+- Improved type safety across components
+- Enhanced error handling to prevent data leaks
+
 ## [0.1.0] - 2024-01-23
 ### Added
 - Calendar view with FullCalendar integration

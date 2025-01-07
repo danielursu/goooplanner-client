@@ -4,85 +4,78 @@
 			<div class="p-fluid">
 				<div class="p-field">
 					<label for="firstName">First Name</label>
-					<input id="firstName" type="text" pInputText formControlName="firstName" />
-					@if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
-					<small class="p-error"> First name is required. </small>
+					<input id="firstName" type="text" pInputText formControlName="firstName" 
+						[ngClass]="{'p-invalid': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}" />
+					@if (getErrorMessage('firstName')) {
+						<small class="p-error">{{ getErrorMessage('firstName') }}</small>
 					}
 				</div>
+
 				<div class="p-field">
 					<label for="lastName">Last Name</label>
-					<input id="lastName" type="text" pInputText formControlName="lastName" />
-					@if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
-					<small class="p-error"> Last name is required. </small>
+					<input id="lastName" type="text" pInputText formControlName="lastName" 
+						[ngClass]="{'p-invalid': registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched}" />
+					@if (getErrorMessage('lastName')) {
+						<small class="p-error">{{ getErrorMessage('lastName') }}</small>
 					}
 				</div>
+
 				<div class="p-field">
 					<label for="email">Email</label>
-					<input id="email" type="text" pInputText formControlName="email" />
-					@if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
-					<small class="p-error"> Please enter a valid email address. </small>
+					<input id="email" type="email" pInputText formControlName="email" 
+						[ngClass]="{'p-invalid': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}" />
+					@if (getErrorMessage('email')) {
+						<small class="p-error">{{ getErrorMessage('email') }}</small>
 					}
 				</div>
 
 				<div class="p-field">
 					<label for="password">Password</label>
-					<span class="password-field">
-						<i
-							[class]="showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"
-							(click)="togglePasswordVisibility('password')"
-							(keydown.enter)="togglePasswordVisibility('password')"
-							(keydown.space)="togglePasswordVisibility('password')"
-							tabindex="0"
-							role="button"
-							[attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-							style="font-size: 1.5rem; cursor: pointer"
-						></i>
-						<input
-							id="password"
-							[type]="showPassword ? 'text' : 'password'"
-							pInputText
-							formControlName="password"
-						/>
-					</span>
-					@if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
-					<small class="p-error">Password must be at least 6 characters long.</small>
+					<div class="password-field">
+						<input id="password" [type]="showPassword ? 'text' : 'password'" pInputText formControlName="password" 
+							[ngClass]="{'p-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}" />
+						<button type="button" class="password-toggle" (click)="togglePasswordVisibility('password')"
+							[attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+							<i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+						</button>
+					</div>
+					@if (getErrorMessage('password')) {
+						<small class="p-error">{{ getErrorMessage('password') }}</small>
 					}
 				</div>
 
 				<div class="p-field">
 					<label for="confirmPassword">Confirm Password</label>
-
-					<span class="confirm-password-field password-field">
-						<i
-							[class]="showConfirmPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"
-							(click)="togglePasswordVisibility('confirmPassword')"
-							(keydown.enter)="togglePasswordVisibility('confirmPassword')"
-							(keydown.space)="togglePasswordVisibility('confirmPassword')"
-							tabindex="0"
-							role="button"
-							[attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
-							style="font-size: 1.5rem"
-						></i>
-						<input
-							id="confirmPassword"
-							[type]="showConfirmPassword ? 'text' : 'password'"
-							pInputText
-							formControlName="confirmPassword"
-						/>
-					</span>
-					@if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
-					<small class="p-error"> Passwords do not match. </small>
+					<div class="password-field">
+						<input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" pInputText formControlName="confirmPassword" 
+							[ngClass]="{'p-invalid': registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched}" />
+						<button type="button" class="password-toggle" (click)="togglePasswordVisibility('confirmPassword')"
+							[attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'">
+							<i [class]="showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+						</button>
+					</div>
+					@if (getErrorMessage('confirmPassword')) {
+						<small class="p-error">{{ getErrorMessage('confirmPassword') }}</small>
 					}
 				</div>
 
-				<span>
-					Already have an account ?
-					<a [routerLink]="['/login']">Login</a>
-				</span>
+				@if (getFormError()) {
+					<div class="p-field">
+						<small class="p-error">{{ getFormError() }}</small>
+					</div>
+				}
 
-				<button pButton type="submit" label="Register" [disabled]="registerForm.invalid">
-					<!-- register -->
-				</button>
+				<div class="form-footer">
+					<p>Already have an account? <a [routerLink]="['/login']">Login here</a></p>
+					
+					<button pButton type="submit" [disabled]="registerForm.invalid || isLoading" class="submit-button">
+						@if (isLoading) {
+							<i class="pi pi-spinner pi-spin"></i>
+						} @else {
+							Register
+						}
+					</button>
+				</div>
 			</div>
 		</form>
 	</p-card>

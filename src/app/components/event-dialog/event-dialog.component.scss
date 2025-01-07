@@ -14,12 +14,12 @@
       font-weight: bold;
 
       &--error {
-        color: #dc2626;
+        color: var(--p-error-color);
       }
     }
 
     &-error {
-      color: #dc2626;
+      color: var(--p-error-color);
       font-size: 0.875rem;
     }
   }
@@ -36,4 +36,79 @@
 .p-dropdown,
 .p-calendar {
   width: 100%;
+}
+
+::ng-deep .p-dialog {
+  .p-dialog-header {
+    background: var(--p-surface-section);
+    color: var(--p-text-color);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--p-surface-border);
+  }
+
+  .p-dialog-content {
+    background: var(--p-surface-card);
+    color: var(--p-text-color);
+    padding: 1.5rem;
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--p-text-color);
+      }
+
+      input, textarea, select {
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--p-surface-ground);
+        border: 1px solid var(--p-surface-border);
+        border-radius: var(--p-border-radius);
+        color: var(--p-text-color);
+        transition: border-color var(--p-transition-duration);
+
+        &:hover, &:focus {
+          border-color: var(--p-primary-color);
+        }
+      }
+
+      .error-message {
+        color: var(--p-error-color);
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+
+  .p-dialog-footer {
+    background: var(--p-surface-section);
+    padding: 1.5rem;
+    border-top: 1px solid var(--p-surface-border);
+
+    button {
+      margin-left: 0.5rem;
+
+      &.p-button-secondary {
+        background: var(--p-surface-card);
+        color: var(--p-text-color);
+        border: 1px solid var(--p-surface-border);
+
+        &:hover {
+          background: var(--p-surface-hover);
+        }
+      }
+
+      &.p-button-danger {
+        background: var(--p-error-color);
+        border-color: var(--p-error-color);
+
+        &:hover {
+          background: var(--p-error-color-hover);
+          border-color: var(--p-error-color-hover);
+        }
+      }
+    }
+  }
 }

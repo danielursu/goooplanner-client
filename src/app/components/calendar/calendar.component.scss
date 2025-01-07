@@ -1,40 +1,205 @@
-@mixin circle($size) {
-	width: $size;
-	height: $size;
-	background-color: var(--p-primary-color);
-	color: var(--p-primary-color-text);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-	font-weight: bold;
-	text-transform: uppercase;
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--surface-ground);
 }
 
-@mixin button($bg-color) {
-	padding: var(--spacing-small) var(--spacing-medium);
-	border: none;
-	border-radius: var(--border-radius);
-	cursor: pointer;
-	font-size: var(--font-size-medium);
-	color: var(--p-primary-color-text);
-	background-color: $bg-color;
-	transition: background-color var(--transition-speed) ease;
+.app-content {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+  height: 100vh;
+  overflow: hidden;
 
-	&:hover {
-		background-color: darken($bg-color, 10%);
-	}
+  &.sidebar-expanded {
+    margin-left: 240px;
+  }
 }
 
 .calendar-container {
-  height: 100vh;
-  width: 100%;
-  
-  ::ng-deep .fc {
-    height: 100vh !important;
-    border: none;
+  height: 100%;
+  padding: 1rem;
+}
+
+.calendar-main {
+  height: 100%;
+  background: var(--surface-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.calendar-view {
+  height: 100%;
+  padding: 0.5rem;
+}
+
+.event-template {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1rem;
   }
-  ::ng-deep .fc-view-harness {
+
+  .event-time {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+  }
+
+  .event-title {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+:host ::ng-deep {
+  .fc {
+    --fc-border-color: var(--surface-border);
+    --fc-button-text-color: var(--text-color);
+    --fc-button-bg-color: var(--surface-card);
+    --fc-button-border-color: var(--surface-border);
+    --fc-button-hover-bg-color: var(--surface-hover);
+    --fc-button-hover-border-color: var(--primary-color);
+    --fc-button-active-bg-color: var(--primary-color);
+    --fc-button-active-border-color: var(--primary-color);
+    --fc-event-bg-color: var(--primary-color);
+    --fc-event-border-color: var(--primary-color);
+    --fc-today-bg-color: var(--highlight-bg);
+    height: 100%;
+  }
+
+  .fc-header-toolbar {
+    padding: 1rem 1rem 0;
+    margin-bottom: 1rem !important;
+    
+    .fc-toolbar-chunk {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .fc-today-button {
+      background-color: var(--green-500) !important;
+      border-color: var(--green-500) !important;
+      color: white !important;
+    }
+
+    .fc-prev-button,
+    .fc-next-button {
+      background-color: var(--green-500) !important;
+      border-color: var(--green-500) !important;
+      color: white !important;
+    }
+
+    .fc-dayGridMonth-button,
+    .fc-timeGridWeek-button,
+    .fc-timeGridDay-button {
+      &.fc-button-active {
+        background-color: var(--green-500) !important;
+        border-color: var(--green-500) !important;
+        color: white !important;
+      }
+    }
+  }
+
+  .fc-view-harness {
+    background: var(--surface-section);
     border-radius: var(--border-radius);
+  }
+
+  .fc-scrollgrid {
+    border-radius: var(--border-radius);
+  }
+
+  .fc-col-header {
+    background: var(--surface-ground);
+  }
+
+  .fc-day-today {
+    background: var(--highlight-bg) !important;
+  }
+
+  .fc-event {
+    cursor: pointer;
+    
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+
+  .fc-event-title {
+    font-weight: 500;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.25rem !important;
+    font-weight: 600;
+  }
+
+  .fc-button {
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    
+    &:focus {
+      box-shadow: 0 0 0 2px var(--focus-ring);
+    }
+  }
+
+  .fc-button-active {
+    color: var(--primary-color-text) !important;
+  }
+
+  .fc-timegrid-slot {
+    height: 3rem !important;
+  }
+
+  // Dialog styles
+  .p-dialog {
+    .p-dialog-header {
+      padding: 1.5rem;
+    }
+
+    .p-dialog-content {
+      padding: 1.5rem;
+    }
+
+    .p-dialog-footer {
+      padding: 1rem 1.5rem;
+      gap: 0.5rem;
+    }
+  }
+
+  // Form styles
+  .p-field {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+  }
+
+  .p-field-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .p-calendar {
+    width: 100%;
+  }
+
+  .p-dropdown {
+    width: 100%;
+  }
+
+  .ng-invalid.ng-touched {
+    border-color: var(--red-500);
   }
 }

@@ -1,0 +1,51 @@
+// This file maps PrimeNG CSS variables to SCSS variables for better DX
+// Spacing
+$spacing-unit: var(--p-spacing-unit, 0.25rem);
+$spacing-1: calc($spacing-unit * 1);  // 0.25rem
+$spacing-2: calc($spacing-unit * 2);  // 0.5rem
+$spacing-3: calc($spacing-unit * 3);  // 0.75rem
+$spacing-4: calc($spacing-unit * 4);  // 1rem
+$spacing-6: calc($spacing-unit * 6);  // 1.5rem
+$spacing-8: calc($spacing-unit * 8);  // 2rem
+$spacing-12: calc($spacing-unit * 12); // 3rem
+$spacing-16: calc($spacing-unit * 16); // 4rem
+
+// Typography
+$font-family: var(--p-font-family);
+$font-size-xs: var(--p-font-size-xs, 0.75rem);
+$font-size-sm: var(--p-font-size-sm, 0.875rem);
+$font-size-base: var(--p-font-size-base, 1rem);
+$font-size-lg: var(--p-font-size-lg, 1.125rem);
+$font-size-xl: var(--p-font-size-xl, 1.25rem);
+
+// Colors
+$primary-color: var(--p-primary-color);
+$primary-color-hover: var(--p-primary-color-hover);
+$primary-color-active: var(--p-primary-color-active);
+$primary-text-color: var(--p-primary-text-color);
+
+// Surface colors
+$surface-ground: var(--p-surface-ground);
+$surface-section: var(--p-surface-section);
+$surface-card: var(--p-surface-card);
+$surface-overlay: var(--p-surface-overlay);
+
+// Text colors
+$text-color: var(--p-text-color);
+$text-color-secondary: var(--p-text-color-secondary);
+
+// Border radius
+$border-radius-sm: var(--p-border-radius-sm, 0.25rem);
+$border-radius: var(--p-border-radius, 0.5rem);
+$border-radius-lg: var(--p-border-radius-lg, 0.75rem);
+
+// Transitions
+$transition-duration: var(--p-transition-duration, 0.2s);
+$transition-timing: var(--p-transition-timing, ease-in-out);
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;

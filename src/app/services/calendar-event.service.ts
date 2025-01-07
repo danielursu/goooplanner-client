@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { CalendarEvent, EventType, EVENT_COLORS } from '../types/calendar.types';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,52 +13,108 @@ export class CalendarEventService {
   private events = new BehaviorSubject<CalendarEvent[]>([]);
   public events$ = this.events.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
+
+  private getAuthHeaders() {
+    const token = this.authService.getToken();
+    if (!token) {
+      return null;
+    }
+    return {
+      Authorization: `Bearer ${token}`
+    };
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('API Error:', error);
+    return throwError(() => new Error('An error occurred while processing your request.'));
+  }
 
   loadEvents(): Observable<CalendarEvent[]> {
-    return this.http.get<CalendarEvent[]>(`${environment.apiUrl}/events`).pipe(
+    const headers = this.getAuthHeaders();
+    if (!headers) {
+      return of([]);
+    }
+
+    return this.http.get<CalendarEvent[]>(`${environment.apiUrl}/events`, {
+      headers
+    }).pipe(
       map(events => {
-        events.forEach(event => {
-          event.color = EVENT_COLORS[event.type];
-        });
-        this.events.next(events);
-        return events;
-      })
+        const processedEvents = events.map(event => ({
+          ...event,
+          color: EVENT_COLORS[event.type],
+          id: event.id.toString()
+        }));
+        this.events.next(processedEvents);
+        return processedEvents;
+      }),
+      catchError(this.handleError)
     );
   }
 
   addEvent(event: Partial<CalendarEvent>): Observable<CalendarEvent> {
-    return this.http.post<CalendarEvent>(`${environment.apiUrl}/events`, event).pipe(
+    const headers = this.getAuthHeaders();
+    if (!headers) {
+      return throwError(() => new Error('Not authenticated'));
+    }
+
+    return this.http.post<CalendarEvent>(`${environment.apiUrl}/events`, event, {
+      headers
+    }).pipe(
       map(newEvent => {
-        newEvent.color = EVENT_COLORS[newEvent.type];
-        const currentEvents = this.events.value;
-        this.events.next([...currentEvents, newEvent]);
-        return newEvent;
-      })
+        const processedEvent = {
+          ...newEvent,
+          color: EVENT_COLORS[newEvent.type],
+          id: newEvent.id.toString()
+        };
+        this.events.next([...this.events.value, processedEvent]);
+        return processedEvent;
+      }),
+      catchError(this.handleError)
     );
   }
 
   updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
-    return this.http.put<CalendarEvent>(`${environment.apiUrl}/events/${event.id}`, event).pipe(
+    const headers = this.getAuthHeaders();
+    if (!headers) {
+      return throwError(() => new Error('Not authenticated'));
+    }
+
+    return this.http.put<CalendarEvent>(`${environment.apiUrl}/events/${event.id}`, event, {
+      headers
+    }).pipe(
       map(updatedEvent => {
-        updatedEvent.color = EVENT_COLORS[updatedEvent.type];
-        const currentEvents = this.events.value;
-        const index = currentEvents.findIndex(e => e.id === updatedEvent.id);
-        if (index !== -1) {
-          currentEvents[index] = updatedEvent;
-          this.events.next([...currentEvents]);
-        }
-        return updatedEvent;
-      })
+        const processedEvent = {
+          ...updatedEvent,
+          color: EVENT_COLORS[updatedEvent.type],
+          id: updatedEvent.id.toString()
+        };
+        const currentEvents = this.events.value.map(e => 
+          e.id === processedEvent.id ? processedEvent : e
+        );
+        this.events.next(currentEvents);
+        return processedEvent;
+      }),
+      catchError(this.handleError)
     );
   }
 
   deleteEvent(eventId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/events/${eventId}`).pipe(
+    const headers = this.getAuthHeaders();
+    if (!headers) {
+      return throwError(() => new Error('Not authenticated'));
+    }
+
+    return this.http.delete<void>(`${environment.apiUrl}/events/${eventId}`, {
+      headers
+    }).pipe(
       map(() => {
-        const currentEvents = this.events.value;
-        this.events.next(currentEvents.filter(event => event.id !== eventId));
-      })
+        this.events.next(this.events.value.filter(event => event.id !== eventId));
+      }),
+      catchError(this.handleError)
     );
   }
 }

@@ -4,16 +4,28 @@
 			<div class="p-fluid">
 				<div class="p-field">
 					<label for="email">Email</label>
-					<input id="email" type="text" pInputText formControlName="email" />
+					<input 
+						id="email" 
+						type="text" 
+						pInputText 
+						formControlName="email"
+						[ngClass]="{'ng-invalid ng-dirty': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}"
+					/>
 					@if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-					<small class="p-error"> Please enter a valid email address. </small>
+						<small class="p-error">{{ getErrorMessage('email') }}</small>
 					}
 				</div>
 
 				<div class="p-field">
 					<label for="password">Password</label>
-
 					<span class="password-field">
+						<input
+							id="password"
+							[type]="showPassword ? 'text' : 'password'"
+							pInputText
+							formControlName="password"
+							[ngClass]="{'ng-invalid ng-dirty': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}"
+						/>
 						<i
 							[class]="showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"
 							(click)="togglePasswordVisibility()"
@@ -22,33 +34,32 @@
 							tabindex="0"
 							role="button"
 							[attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-							style="font-size: 1.5rem"
+							class="password-toggle"
 						></i>
-						<input
-							id="password"
-							[type]="showPassword ? 'text' : 'password'"
-							pInputText
-							formControlName="password"
-						/>
 					</span>
-
 					@if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-					<small class="p-error"> Password must be at least 6 characters long. </small>
+						<small class="p-error">{{ getErrorMessage('password') }}</small>
 					}
 				</div>
 
 				@if(errorMessage) {
-				<p class="p-error">{{ errorMessage }}</p>
+					<div class="error-message">
+						<i class="pi pi-exclamation-circle"></i>
+						<span>{{ errorMessage }}</span>
+					</div>
 				}
 
-				<span>
-					Do not have an account ?
-					<a [routerLink]="['/register']"> Register </a>
-				</span>
-
-				<button pButton type="submit" label="Login" [disabled]="loginForm.invalid">
-					<!-- login -->
-				</button>
+				<div class="form-footer">
+					<p>Don't have an account? <a [routerLink]="['/register']">Register here</a></p>
+					
+					<button 
+						pButton 
+						type="submit" 
+						[disabled]="loginForm.invalid" 
+						[loading]="isLoading"
+						label="Login"
+					></button>
+				</div>
 			</div>
 		</form>
 	</p-card>

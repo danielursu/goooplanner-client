@@ -9,6 +9,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface SidebarMenuItem {
   name: string;
@@ -34,6 +35,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   isDarkTheme = false;
   currentRoute: string = '';
   private routerSubscription?: Subscription;
+  items: MenuItem[] = [];
 
   public menuItems: SidebarMenuItem[] = [
     { 
@@ -56,44 +58,40 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   ];
 
-  items: MenuItem[] = [
-    {
-      label: 'Profile',
-      icon: 'pi pi-user',
-      routerLink: '/profile',
-      tooltipOptions: {
-        tooltipLabel: 'View Profile',
-        tooltipPosition: 'right'
-      }
-    },
-    {
-      separator: true
-    },
-    {
-      label: 'Logout',
-      icon: 'pi pi-power-off',
-      command: () => {
-        this.handleLogout();
-      },
-      tooltipOptions: {
-        tooltipLabel: 'Logout from application',
-        tooltipPosition: 'right'
-      }
-    }
-  ];
-
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    if (!this.profileColor) {
-      this.profileColor = '#673ab7';
-    }
-    
-    this.loadThemePreference();
-    this.initializeRouteTracking();
-    
-    // Set initial route
-    this.currentRoute = this.router.url;
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.currentRoute = event.urlAfterRedirects;
+        }
+      });
+
+    this.items = [
+      {
+        label: 'Profile',
+        icon: 'pi pi-user',
+        command: () => this.router.navigate(['/profile'])
+      },
+      {
+        label: 'Settings',
+        icon: 'pi pi-cog',
+        command: () => this.router.navigate(['/settings'])
+      },
+      {
+        separator: true
+      },
+      {
+        label: 'Sign Out',
+        icon: 'pi pi-sign-out',
+        command: () => this.handleLogout()
+      }
+    ];
   }
 
   ngOnDestroy() {
@@ -102,54 +100,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private initializeRouteTracking() {
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.currentRoute = event.urlAfterRedirects;
-      }
-    });
-  }
-
   toggleTheme() {
     this.isDarkTheme = !this.isDarkTheme;
-    this.applyTheme();
-    this.saveThemePreference();
+    document.documentElement.setAttribute('data-theme', this.isDarkTheme ? 'dark' : 'light');
   }
 
-  handleKeyPress(event: KeyboardEvent, action: () => void) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      action();
-    }
-  }
-
-  private handleLogout() {
-    // Implement logout logic here
-    console.log('Logout clicked');
-  }
-
-  private applyTheme() {
-    const body = document.body;
-    if (this.isDarkTheme) {
-      body.classList.add('dark');
-      body.classList.remove('light');
-    } else {
-      body.classList.add('light');
-      body.classList.remove('dark');
-    }
-  }
-
-  private loadThemePreference() {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    this.isDarkTheme = savedTheme ? savedTheme === 'dark' : prefersDark;
-    this.applyTheme();
-  }
-
-  private saveThemePreference() {
-    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
+  handleLogout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
