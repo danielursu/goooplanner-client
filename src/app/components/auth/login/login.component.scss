@@ -1,53 +1,40 @@
-$card-width: 700px;
-$card-padding: 2rem;
-$spacing: 1rem;
-$box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-$mobile-breakpoint: 730px;
-
-// Mixins
-@mixin card-styles {
-	padding: $card-padding;
-	width: $card-width;
-	box-shadow: $box-shadow;
-}
+@use '../auth-shared.styles' as auth;
 
 .login-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	width: 100%;
+  @extend .auth-container;
 }
 
 :host ::ng-deep .login-card {
-	@include card-styles;
-
-	.p-card-body {
-		padding-top: 1rem;
-	}
+  @extend .auth-card;
 }
 
 .p-field {
-	margin-bottom: 1.5rem;
+  @extend .auth-field;
 }
+
 .password-field {
-	position: relative;
-	i {
-		position: absolute;
-		bottom: -3px;
-		right: 10px;
-		cursor: pointer;
-	}
+  @extend .password-field;
 }
 
-button[type="submit"] {
-	margin-top: $spacing;
-	width: 100%;
+.error-message {
+  @extend .error-message;
 }
 
-@media (max-width: $mobile-breakpoint) {
-	:host ::ng-deep .login-card {
-		@include card-styles;
-		width: 100%;
-	}
+.register-link {
+  @extend .auth-link;
+}
+
+.login-button {
+  @extend .auth-button;
+}
+
+.p-error {
+  @extend .p-error;
+}
+
+@media (max-width: auth.$mobile-breakpoint) {
+  :host ::ng-deep .login-card {
+    width: 90%;
+    padding: 1.5rem;
+  }
 }

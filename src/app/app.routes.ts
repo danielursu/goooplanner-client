@@ -6,7 +6,28 @@ import { AuthGuard } from "./guards/auth.guard";
 import { NoAuthGuard } from "./guards/no-auth.guard";
 
 export const routes: Routes = [
-	{ path: "", component: CalendarComponent, title: "Calendar", canActivate: [AuthGuard] },
-	{ path: "login", component: LoginComponent, title: "Login", canActivate: [NoAuthGuard] },
-	{ path: "register", component: RegisterComponent, title: "Register", canActivate: [NoAuthGuard] },
+  { 
+    path: "", 
+    component: CalendarComponent, 
+    title: "Calendar", 
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },
+  { 
+    path: "login", 
+    component: LoginComponent, 
+    title: "Login", 
+    canActivate: [NoAuthGuard] 
+  },
+  { 
+    path: "register", 
+    component: RegisterComponent, 
+    title: "Register", 
+    canActivate: [NoAuthGuard] 
+  },
+  { 
+    path: "**", 
+    redirectTo: "/login",
+    pathMatch: 'full'
+  }
 ];
